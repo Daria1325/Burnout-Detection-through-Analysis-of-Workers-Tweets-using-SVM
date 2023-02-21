@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container bg-light">
+    
+
+    <div class="col-md-12 text-center">
+        <a class="btn btn-primary btn-lg" href="#" role="button">START SCANNING</a>
+    </div>
+    <div class="col-md-12 pt-5">
+        <a class="btn active" href="/" role="button">All employees</a>
+        <a class="btn " href="#" role="button">Grouped</a>
+        <a class="btn " href="#" role="button">Statistic</a>
+    </div>
+
+    <div>
+        <input class="form-control mb-4" id="tableSearch" type="text" placeholder="Search..">
+  
+        <table class="table table-bordered table-striped">
+          
+          <tbody id="myTable">
+            <tr>
+              <td class="col-11"><h3>Ann Lister</h3> <p>High risk twoo scanings</p></td>
+              <td class="bg-dark col-1">john@example.com</td>
+            </tr>
+            <tr>
+                <td class="col-11"><h3>Mary Lister</h3> <p>High risk twoo scanings</p></td>
+                <td class="bg-dark col-1">john@example.com</td>
+              </tr>
+            
+          </tbody>
+        </table>
+    </div>
+  
+
+</div>
+
+
+   
+
+
+
+{% endblock content %}

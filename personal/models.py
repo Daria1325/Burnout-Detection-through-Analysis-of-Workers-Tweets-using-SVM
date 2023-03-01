@@ -1,20 +1,19 @@
 from django.db import models
 
-from django.db.models.signals import pre_save
-from django.utils.text import slugify
-from django.conf import settings
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
 
 
-def upload_location(instance,filename):
+def upload_location(instance,filename, **kwargs):
     file_path ='avatar/{employee_id}'.format(
         employee_id = str(instance.employee_id)
     )
     return file_path
 
-class States(models.Model):
-    state_id =models.CharField(max_length=10,null=False,blank=False, primary_key=True)
+
+
+class State(models.Model):
+    state_id =models.AutoField(primary_key=True)
     note = models.CharField(max_length=50,null=False,blank=False)
     status =models.CharField(max_length=10,null=False,blank=False)
     progress =models.CharField(max_length=10,null=False,blank=False)
@@ -22,21 +21,26 @@ class States(models.Model):
     def __str__(self):
         return self.note
 
-class Employees(models.Model):
-    employee_id = models.CharField(max_length=10,null=False,blank=False, primary_key=True)
+class Employee(models.Model):
+    employee_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=30,null=False,blank=False)
     sex =models.CharField(max_length=1,null=False,blank=False)
     birth_date = models.DateField(verbose_name="birth date")
     join_date = models.DateField(verbose_name="join date")
     position =models.CharField(max_length=30,null=False,blank=False)
-    avatar = models.ImageField(upload_location=upload_location, null=True)
-    state_id = models.ForeignKey(States, blank=True)
+    avatar = models.ImageField(upload_to=upload_location, null=True)
+    state_id = models.ForeignKey(State, null=True, blank=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.name
 
-class Usernames(models.Model):
-    employee_id =models.ForeignKey(Employees, on_delete=models.CASCADE, primary_key=True)
+@receiver(post_delete, sender = Employee)
+def submition_delete(sender, instance, **kwargs):
+    instance.avatar.delete(False)
+
+
+class Username(models.Model):
+    employee_id =models.ForeignKey(Employee, on_delete=models.CASCADE, primary_key=True)
     username =models.CharField(max_length=30,null=True)
 
     def __str__(self):
@@ -44,12 +48,15 @@ class Usernames(models.Model):
 
 
     
-class Results(models.Model):
-    employee_id =models.ForeignKey(Employees, on_delete=models.CASCADE, primary_key=True)
-    scan_date = models.DateField(auto_now_add=True, verbose_name="scan date", primary_key=True)
+class Result(models.Model):
+    employee_id =models.ForeignKey(Employee, on_delete=models.CASCADE)
+    scan_date = models.DateField(auto_now_add=True, verbose_name="scan date")
     percent_N = models.FloatField()
     percent_S =models.FloatField()
     percent_L=models.FloatField()
     count_N = models.IntegerField()
     count_S =models.IntegerField()
     count_L =models.IntegerField()
+
+    class Meta:
+        unique_together = (("employee_id", "scan_date"),)

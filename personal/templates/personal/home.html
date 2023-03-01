@@ -2,37 +2,88 @@
 {% load static %}
 {% block content %}
 
+
+
 <div class="container bg-light">
-    
 
-    <div class="col-md-12 text-center">
-        <a class="btn btn-primary btn-lg" href="#" role="button">START SCANNING</a>
-    </div>
-    <div class="col-md-12 pt-5">
-        <a class="btn active" href="/" role="button">All employees</a>
-        <a class="btn " href="#" role="button">Grouped</a>
-        <a class="btn " href="#" role="button">Statistic</a>
-    </div>
+  <!--Scanning button  -->
+<div class="col-md-12 text-center pt-5">
+  <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#scaningForm">
+    START SCANNING
+  </button>
+</div>
 
-    <div>
-        <input class="form-control mb-4" id="tableSearch" type="text" placeholder="Search..">
-  
-        <table class="table table-bordered table-striped">
-          
-          <tbody id="myTable">
-            <tr>
-              <td class="col-11"><h3>Ann Lister</h3> <p>High risk twoo scanings</p></td>
-              <td class="bg-dark col-1">john@example.com</td>
-            </tr>
-            <tr>
-                <td class="col-11"><h3>Mary Lister</h3> <p>High risk twoo scanings</p></td>
-                <td class="bg-dark col-1">john@example.com</td>
-              </tr>
-            
-          </tbody>
-        </table>
-    </div>
-  
+{% include 'personal/modal_scaning.html' %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!--Navigation tabs  -->
+<nav class="pt-5">
+  <div class="nav nav-tabs" id="nav_tab" role="tablist">
+      <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"
+      data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home"
+      aria-selected="true">All employees</button>
+
+      <button class="nav-link" id="nav-grouped-tab" data-bs-toggle="tab"
+      data-bs-target="#nav-grouped" type="button" role="tab" aria-controls="nav-grouped"
+      aria-selected="false">Grouped</button>
+
+      <button class="nav-link" id="nav-statistic-tab" data-bs-toggle="tab"
+      data-bs-target="#nav-statistic" type="button" role="tab" aria-controls="nav-statistic"
+      aria-selected="false">Statistic</button>
+  </div>
+</nav>
+  <!--Content of tabs  -->
+<div class="tab-content" id="nav-tabContent">
+    <!--All employees  -->
+  <div class="tab-pane fade show active p-3" id="nav-home" role="tabpanel"
+  aria-labelledby="nav-home-tab">
+  <div>
+    <input class="form-control mb-4" id="tableSearch" type="text" placeholder="Search..">
+
+    <table class="table table-bordered table-striped">
+      
+      <tbody id="myTable">
+        <tr>
+          <td class="col-11"><h3>Ann Lister</h3> <p>High risk twoo scanings</p></td>
+          <td class="bg-dark col-1 "></td>
+        </tr>
+        <tr>
+            <td class="col-11"><h3>Mary Lister</h3> <p>High risk twoo scanings</p></td>
+            <td class="bg-dark col-1">j</td>
+          </tr>
+        
+      </tbody>
+    </table>
+</div>
+
+  </div>
+  <!--Grouped  -->
+  <div class="tab-pane fade show p-3" id="nav-grouped" role="tabpanel"
+  aria-labelledby="nav-grouped-tab">
+  {% include 'personal/grouped.html' %}
+
+
+  </div>
+  <!--Statistic  -->
+  <div class="tab-pane fade show p-3" id="nav-statistic" role="tabpanel"
+  aria-labelledby="nav-statistic-tab">
+  <div>
+    STATISTIC
+</div>
+
+  </div>
+</div>  
 
 </div>
 

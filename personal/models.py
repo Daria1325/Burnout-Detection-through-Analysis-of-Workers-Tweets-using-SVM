@@ -13,18 +13,23 @@ def upload_location(instance,filename, **kwargs):
 
 
 class State(models.Model):
+    STATUS_OPTIONS = (('L','Low'), ('M','Moderate'), ('H','High'),('N','No data'))
+    PROGRESS_OPTIONS = (('I','Improved'), ('S','Stable'), ('W','Worsened'))
+
     state_id =models.AutoField(primary_key=True)
     note = models.CharField(max_length=50,null=False,blank=False)
-    status =models.CharField(max_length=10,null=False,blank=False)
-    progress =models.CharField(max_length=10,null=False,blank=False)
+    status =models.CharField(max_length=10,choices=STATUS_OPTIONS)
+    progress =models.CharField(max_length=10,choices=PROGRESS_OPTIONS)
 
     def __str__(self):
         return self.note
 
 class Employee(models.Model):
+    SEX_OPTIONS = (('M','Male'), ('F','Female'), ('O','Other'))
+
     employee_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=30,null=False,blank=False)
-    sex =models.CharField(max_length=1,null=False,blank=False)
+    sex =models.CharField(max_length=1, choices=SEX_OPTIONS)
     birth_date = models.DateField(verbose_name="birth date")
     join_date = models.DateField(verbose_name="join date")
     position =models.CharField(max_length=30,null=False,blank=False)

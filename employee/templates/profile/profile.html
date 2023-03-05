@@ -3,12 +3,20 @@
 {% block content %}
 
 <div class="container">
-    <div class ="row">
-    <div class="col-5 h-100 ms-auto me-auto shadow p-2 mb-5 bg-white rounded">
+    <div class ="row align-items-stretch">
+    <div class="col-5 ms-auto me-auto shadow p-2 mb-5 bg-white rounded">
         <div class="row">
-        <div class="col-4">
-            <p>Avatar</p>
-            <img alt="" src="{{ employee.avatar.url }}">
+        <div class="col-4 align-self-center">
+            {% if  employee.avatar %}
+            <img class="img-responsive mw-100 rounded" alt="avatar" src="{{employee.avatar.url}}">
+            {% else %}
+                {% if employee.sex == 'F' %}
+                    <img class="img-responsive mw-100 rounded" alt="avatar" src="{% static 'female-profile.jpg' %}">
+                {% else %}
+                     <img class="img-responsive mw-100 rounded" alt="avatar" src="{% static 'male-profile.jpg' %}">
+                {% endif %}
+            {% endif %}
+
         </div>
         <div class="col-4">
             <div >
@@ -36,7 +44,7 @@
         </div>
     </div>
     </div>
-    <div class="col-5 h-100 me-auto ms-auto shadow p-2 mb-5 bg-white rounded">
+    <div class="col-5 me-auto ms-auto shadow p-2 mb-5 bg-white rounded">
         <div class="row">
             <div class="col-4">
                 {% if last_results.status == 'Low' %}

@@ -5,8 +5,8 @@ from django.dispatch import receiver
 
 
 def upload_location(instance,filename, **kwargs):
-    file_path ='avatar/{employee_id}'.format(
-        employee_id = str(instance.employee_id)
+    file_path ='avatar/{employee_id}/{filename}'.format(
+        employee_id = str(instance.employee_id), filename = filename
     )
     return file_path
 

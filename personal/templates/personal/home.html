@@ -42,15 +42,29 @@
     <table class="table table-bordered table-striped">
       
       <tbody id="myTable">
+        {% for emp in all_results %}
         <tr>
-          <td class="col-11"><h3>Ann Lister</h3> <p>High risk twoo scanings</p></td>
+         
+          <td class="col-11">
+            <a class="text-decoration-none link-dark" href="{% url 'profile' id=emp.id %}">
+            <h3>{{emp.name}}</h3> <p>{{emp.note}}</p>
+            </a>
+          </td>
+          {% if emp.state == "L" %}
+          <td class="bg-success col-1 "></td>
+          {% endif %}
+          {% if emp.state == "M" %}
+          <td class="bg-warning col-1 "></td>
+          {% endif %}
+          {% if emp.state == "H" %}
+          <td class="bg-danger col-1 "></td>
+          {% endif %}
+          {% if emp.state == "N" %}
           <td class="bg-dark col-1 "></td>
-        </tr>
-        <tr>
-            <td class="col-11"><h3>Mary Lister</h3> <p>High risk twoo scanings</p></td>
-            <td class="bg-dark col-1">j</td>
-          </tr>
+          {% endif %}
         
+        </tr>
+        {% endfor %}        
       </tbody>
     </table>
 </div>

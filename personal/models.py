@@ -34,6 +34,7 @@ class Employee(models.Model):
     join_date = models.DateField(verbose_name="join date")
     position =models.CharField(max_length=30,null=False,blank=False)
     avatar = models.ImageField(upload_to=upload_location, null=True)
+    email = models.EmailField(null=False, blank=True)
     state_id = models.ForeignKey(State, null=True, blank=True, on_delete=models.SET_NULL)
 
     def __str__(self):

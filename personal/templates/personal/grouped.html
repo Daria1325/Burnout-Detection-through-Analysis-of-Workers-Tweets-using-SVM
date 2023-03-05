@@ -25,7 +25,7 @@
 
 
   <div class="tab-content" id="nav-tabContent">
-
+  <!-- High -->
   <div class="tab-pane fade show active p-3" id="nav-high" role="tabpanel"
   aria-labelledby="nav-high-tab">
   <div>
@@ -34,23 +34,148 @@
     <table class="table table-bordered table-striped">
       
       <tbody id="myTable">
-        <tr>
-          <td class="col-11"><h3>Ann Lister</h3> <p>High risk twoo scanings</p></td>
-          <td class="bg-dark col-1 "></td>
-        </tr>
-        <tr>
-            <td class="col-11"><h3>Mary Lister</h3> <p>High risk twoo scanings</p></td>
-            <td class="bg-dark col-1">j</td>
-          </tr>
+        {% for emp in all_results %}
+        {% if emp.state == "H" %}
         
+        <tr>
+          <td class="col-11">
+            <a class="text-decoration-none link-dark" href="{% url 'profile' id=emp.id %}">
+              <h3>{{emp.name}}</h3> <p>{{emp.note}}</p>
+              </a>
+          </td>
+          <td class="bg-danger col-1 "></td>          
+        </tr>
+        {% endif %}
+        {% endfor %}   
       </tbody>
     </table>
+  </div>
 </div>
 
-  </div>
-  <!--Grouped  -->
+  <!--Moderate  -->
   <div class="tab-pane fade show p-3" id="nav-moderate" role="tabpanel"
   aria-labelledby="nav-moderate-tab">
+  <div>
+    <input class="form-control mb-4" id="tableSearch" type="text" placeholder="Search..">
 
+    <table class="table table-bordered table-striped">
+      
+      <tbody id="myTable">
+        {% for emp in all_results %}
+        {% if emp.state == "M" %}
+        <tr>
+          <td class="col-11">
+            <a class="text-decoration-none link-dark" href="{% url 'profile' id=emp.id %}">
+              <h3>{{emp.name}}</h3> <p>{{emp.note}}</p>
+              </a>
+          </td>
+          <td class="bg-warning col-1 "></td>          
+        </tr>
+        {% endif %}
+        {% endfor %}   
+      </tbody>
+    </table>
   </div>
+</div>
+
+  <!--Low  -->
+  <div class="tab-pane fade show p-3" id="nav-low" role="tabpanel"
+  aria-labelledby="nav-low-tab">
+  <div>
+    <input class="form-control mb-4" id="tableSearch" type="text" placeholder="Search..">
+
+    <table class="table table-bordered table-striped">
+      
+      <tbody id="myTable">
+        {% for emp in all_results %}
+        {% if emp.state == "L" %}
+        <tr>
+          <td class="col-11">
+            <a class="text-decoration-none link-dark" href="{% url 'profile' id=emp.id %}">
+              <h3>{{emp.name}}</h3> <p>{{emp.note}}</p>
+              </a>
+          </td>
+          <td class="bg-success col-1 "></td>          
+        </tr>
+        {% endif %}
+        {% endfor %}   
+      </tbody>
+    </table>
+  </div>
+</div>
+
+  <!--Improved  -->
+  <div class="tab-pane fade show p-3" id="nav-improved" role="tabpanel"
+  aria-labelledby="nav-improved-tab">
+  <div>
+    <input class="form-control mb-4" id="tableSearch" type="text" placeholder="Search..">
+
+    <table class="table table-bordered table-striped">
+      
+      <tbody id="myTable">
+        {% for emp in all_results %}
+        {% if emp.progress == "I" %}
+        <tr>
+          <td class="col-11">
+            <a class="text-decoration-none link-dark" href="{% url 'profile' id=emp.id %}">
+              <h3>{{emp.name}}</h3> <p>{{emp.note}}</p>
+              </a>
+          </td>
+          {% if emp.state == "L" %}
+          <td class="bg-success col-1 "></td>
+          {% endif %}
+          {% if emp.state == "M" %}
+          <td class="bg-warning col-1 "></td>
+          {% endif %}
+          {% if emp.state == "H" %}
+          <td class="bg-danger col-1 "></td>
+          {% endif %}
+          {% if emp.state == "N" %}
+          <td class="bg-dark col-1 "></td>
+          {% endif %}        
+        </tr>
+        {% endif %}
+        {% endfor %}   
+      </tbody>
+    </table>
+  </div>
+</div>
+
+  <!--Worsened  -->
+  <div class="tab-pane fade show p-3" id="nav-worsened" role="tabpanel"
+  aria-labelledby="nav-worsened-tab">
+  <div>
+    <input class="form-control mb-4" id="tableSearch" type="text" placeholder="Search..">
+
+    <table class="table table-bordered table-striped">
+      
+      <tbody id="myTable">
+        {% for emp in all_results %}
+        {% if emp.progress == "W" %}
+        <tr>
+          <td class="col-11">
+            <a class="text-decoration-none link-dark" href="{% url 'profile' id=emp.id %}">
+              <h3>{{emp.name}}</h3> <p>{{emp.note}}</p>
+              </a>
+          </td>
+          {% if emp.state == "L" %}
+          <td class="bg-success col-1 "></td>
+          {% endif %}
+          {% if emp.state == "M" %}
+          <td class="bg-warning col-1 "></td>
+          {% endif %}
+          {% if emp.state == "H" %}
+          <td class="bg-danger col-1 "></td>
+          {% endif %}
+          {% if emp.state == "N" %}
+          <td class="bg-dark col-1 "></td>
+          {% endif %}        
+        </tr>
+        {% endif %}
+        {% endfor %}   
+      </tbody>
+    </table>
+  </div>
+</div>
+
 </div>

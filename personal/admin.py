@@ -17,7 +17,7 @@ class StateAdmin(UserAdmin):
 admin.site.register(State, StateAdmin)
 
 class EmployeeAdmin(UserAdmin):
-    list_display = ('name','sex','birth_date','join_date','position','avatar','state_id')
+    list_display = ('name','sex','birth_date','join_date','position','avatar','state_id', 'email')
     search_fields = ('name','position')
     readonly_fields = ()
     ordering = ('name',)

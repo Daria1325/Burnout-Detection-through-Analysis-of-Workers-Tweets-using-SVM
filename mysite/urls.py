@@ -29,11 +29,16 @@ from documentation.views import(
     documentation_view,
 )
 
+from employee.views import(
+    profile_screen_view,
+)
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home_screen_view, name = "home"),
     path('logout/', logout_view,name = "logout"),
     path('login/', login_view,name = "login"),
-    path('documentation/', documentation_view,name = "documentation")
-    
+    path('documentation/', documentation_view,name = "documentation"),
+    path('employee/<int:id>/', profile_screen_view,name = "profile")
 ]

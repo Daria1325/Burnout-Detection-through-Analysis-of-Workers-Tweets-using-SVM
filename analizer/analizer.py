@@ -111,11 +111,12 @@ from personal.models import Employee, State, Result
 
 
 def openFiles():
-    f = open("data\\alldata.txt", "r")
+    f = open("analizer\data\\alldata.txt", "r")
+    
     textData =f.read()
     textData = textData.split('\n')
 
-    with open('Model\model.pkl', 'rb') as f:
+    with open('analizer\Model\model.pkl', 'rb') as f:
         model = pickle.load(f)
     return textData, model
 
@@ -150,7 +151,7 @@ def analize_results(probs, counts):
 def find_new_status_id(prev_status_id, new_status):
     if prev_status_id is None:
         new_status_id = State.objects.filter(status=new_status).filter(progress__exact='').values_list('state_id', flat=True)[0]
-        return
+        return new_status_id
     prev_status = State.objects.filter(state_id=prev_status_id).values_list('status', flat=True)[0]
     
     if (new_status=='N'):
@@ -168,13 +169,21 @@ def find_new_status_id(prev_status_id, new_status):
     return new_status_id
 
 def change_status(worker, new_status_id):
-    Employee.objects.filter(employee_id=worker['employee_id_id']).update(state_id=new_status_id)
+    emp = Employee.objects.get(employee_id=worker['employee_id_id'])
+    print(new_status_id)
+    state = State.objects.get(state_id=new_status_id)
+   
+    emp.state_id = state
+    emp.save()
     return
 
 def save_results(worker, date, probs, count):
-    Result.objects.create(employee_id=worker['employee_id_id'], scan_date = date, 
-    percent_N = probs[0], percent_S= probs[1], percent_L = probs[2],
-    count_N = count[0], count_S = count[1], count_L = count[2])
+    employee = Employee.objects.get(employee_id=worker['employee_id_id'])
+    Result.objects.update_or_create(
+    employee_id=employee, scan_date = date,
+    defaults={"percent_N" : probs[0], "percent_S": probs[1], "percent_L" : probs[2],
+    "count_N" : count[0], "count_S" : count[1], "count_L" : count[2]},
+)
     return
 
 

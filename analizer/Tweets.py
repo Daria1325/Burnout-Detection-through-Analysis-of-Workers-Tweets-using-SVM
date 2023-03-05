@@ -2,10 +2,11 @@ import configparser
 import tweepy
 from dateutil.relativedelta import relativedelta
 import re
+import datetime
 from nltk.corpus import stopwords
 
 class Twitter(object):
-    def __init__(self, stop_words = 'english', config = 'config.ini'):
+    def __init__(self, stop_words = 'english', config = 'analizer\config.ini'):
         self.stop_words = set(stopwords.words(stop_words))
         self.config_path = config
 
@@ -30,7 +31,6 @@ class Twitter(object):
     def get_tweets(self,username,end_date):
             api = self.config(self.config_path)
             start_date = end_date + relativedelta(months=-1)
-            
             number_of_tweets=200
 
             tweets = []

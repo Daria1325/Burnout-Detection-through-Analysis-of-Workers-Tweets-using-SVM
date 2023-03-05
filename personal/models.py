@@ -55,7 +55,7 @@ class Username(models.Model):
     
 class Result(models.Model):
     employee_id =models.ForeignKey(Employee, on_delete=models.CASCADE)
-    scan_date = models.DateField(auto_now_add=True, verbose_name="scan date")
+    scan_date = models.DateField(verbose_name="scan date")
     percent_N = models.FloatField()
     percent_S =models.FloatField()
     percent_L=models.FloatField()

@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from datetime import datetime
 
 from personal.models import Employee, Result, State
 # Create your views here.
@@ -7,6 +8,11 @@ from personal.models import Employee, Result, State
 def get_enployee_info(id):
     employee = Employee.objects.get(pk=id)
     last_results = Result.objects.filter(employee_id=employee).order_by('-scan_date').values()
+    results = list(Result.objects.filter(employee_id=employee).order_by('scan_date').values())
+    for result in results:
+        result['scan_date'] = result['scan_date'].strftime("%Y/%m/%d")
+
+
     if last_results:
         state = State.objects.get(state_id=1)
         last_results = last_results[0]
@@ -22,15 +28,17 @@ def get_enployee_info(id):
                         'percent_S': 0,
                         'percent_L': 0
         }
-    return employee, last_results
+    ctx = {'employee' : employee,
+            'last_results' : last_results,
+            'results' : results}  
+
+    return ctx
 
     
 
 
 @login_required(login_url='login/')
 def profile_screen_view(request,id):
-    emp, res = get_enployee_info(id)
-    context = {'employee' : emp,
-               'last_results' : res}  
+    context = get_enployee_info(id) 
 
     return render(request, 'profile/profile.html',context)

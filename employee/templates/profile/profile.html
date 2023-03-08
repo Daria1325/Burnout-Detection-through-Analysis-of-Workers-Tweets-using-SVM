@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 
-<div class="container">
+<div class="container" data-js-vars="{{ results }}">
     <div class ="row align-items-stretch">
     <div class="col-5 ms-auto me-auto shadow p-2 mb-5 bg-white rounded">
         <div class="row">
@@ -21,25 +21,25 @@
         <div class="col-4">
             <div >
                 <p class="m-0 text-primary">Name</p>
-                <p>{{employee.name}}</p>
+                <p class="mb-2">{{employee.name}}</p>
             </div>
             <div >
                 <p class="m-0 text-primary">Date of Birth</p>
-                <p>{{employee.birth_date}}</p>
+                <p class="mb-2">{{employee.birth_date}}</p>
             </div>
             <div >
                 <p class="m-0 text-primary">Position</p>
-                <p>{{employee.position}}</p>
+                <p class="mb-2">{{employee.position}}</p>
             </div>
         </div>
         <div class="col-4">
             <div >
                 <p class="m-0 text-primary">Email</p>
-                <p>{{employee.email}}</p>
+                <p class="mb-2">{{employee.email}}</p>
             </div>
             <div >
                 <p class="m-0 text-primary">Date of Joining</p>
-                <p>{{employee.join_date}}</p>
+                <p class="mb-2">{{employee.join_date}}</p>
             </div>
         </div>
     </div>
@@ -66,34 +66,57 @@
             <div class="col-4">
                 <div >
                     <p class="m-0 text-primary">Status</p>
-                    <p>{{last_results.status}}</p>
+                    <p class="mb-2">{{last_results.status}}</p>
                 </div>
                 <div >
                     <p class="m-0 text-primary">Count of Tweets</p>
-                    <p>{{last_results.count}}</p>
-                </div>
-                <div >
-                    <p class="m-0 text-primary">Normal</p>
-                    <p>{{last_results.percent_N}}</p>
+                    <p class="mb-2">{{last_results.count}}</p>
                 </div>
             </div>
             <div class="col-4">
                 <div >
+                    <p class="m-0 text-primary">Normal</p>
+                    <p class="mb-2">{{last_results.percent_N}}</p>
+                </div>
+                <div >
                     <p class="m-0 text-primary">Stressed</p>
-                    <p>{{last_results.percent_S}}</p>
+                    <p class="mb-2">{{last_results.percent_S}}</p>
                 </div>
                 <div >
                     <p class="m-0 text-primary">Lonely</p>
-                    <p>{{last_results.percent_L}}</p>
+                    <p class="mb-2">{{last_results.percent_L}}</p>
                 </div>
             </div>
         </div>
     </div>
-</div>
+    </div>
+    <div class ="row align-items-stretch">
+        <div class="col-3 ms-auto me-auto shadow p-2 mb-5 bg-white rounded">
+            <label>Start Date</label>
+            <input type = "date" id="start_date" name = "start_date"> 
+        </div>
+        <div class="col-3 ms-auto me-auto shadow p-2 mb-5 bg-white rounded">
+            <label for="end_date">End Date</label>
+            <input type = "date" id="end_date" name = "end_date"> 
+        </div>
+        <div class="col-3 ms-auto me-auto shadow p-2 mb-5 bg-white rounded">
+            <label for="multiple-select-field">Properties</label>
+            <select class="form-select" id="multiple-select-field" data-placeholder="Choose properties" multiple>
+                <option value="N" selected>Normal Percent</option>
+                <option value="S">Stressed Percent</option>
+                <option value="L">Lonely Percent</option>
+                <option value="C">Count of Tweets</option>
+            </select>
+        </div>
+    <div class ="row align-items-stretch">
+        <div class="col-10 h-100 ms-auto me-auto shadow p-2 mb-5 bg-white rounded">
+            <canvas id="myChart"></canvas>
+        </div>
+    </div>
 </div>
 
 
-   
+<script src="https://momentjs.com/downloads/moment.min.js"></script>  
 
 
 

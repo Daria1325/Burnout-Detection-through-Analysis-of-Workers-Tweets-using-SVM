@@ -4,7 +4,7 @@
 
 <div class="container" data-js-vars="{{ results }}">
     <div class ="row align-items-stretch">
-    <div class="col-5 ms-auto me-auto shadow p-2 mb-5 bg-white rounded">
+    <div class="col-12 col-md-5 ms-auto me-auto shadow mb-5 bg-white rounded">
         <div class="row">
         <div class="col-4 align-self-center">
             {% if  employee.avatar %}
@@ -28,14 +28,14 @@
                 <p class="mb-2">{{employee.birth_date}}</p>
             </div>
             <div >
-                <p class="m-0 text-primary">Position</p>
-                <p class="mb-2">{{employee.position}}</p>
+                <p class="m-0 text-primary">Email</p>
+                <p class="mb-2">{{employee.email}}</p>
             </div>
         </div>
         <div class="col-4">
             <div >
-                <p class="m-0 text-primary">Email</p>
-                <p class="mb-2">{{employee.email}}</p>
+                <p class="m-0 text-primary">Position</p>
+                <p class="mb-2">{{employee.position}}</p>
             </div>
             <div >
                 <p class="m-0 text-primary">Date of Joining</p>
@@ -44,11 +44,11 @@
         </div>
     </div>
     </div>
-    <div class="col-5 me-auto ms-auto shadow p-2 mb-5 bg-white rounded">
+    <div class="col-12 col-md-5 me-auto ms-auto shadow mb-5 bg-white rounded">
         <div class="row">
             <div class="col-4">
                 {% if last_results.status == 'Low' %}
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="green" class="bi bi-circle-fill w-100 h-100 p-3" viewBox="0 0 16 16">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="green" class="bi bi-circle-fill w-100 h-100 p-lg-3 p-0" viewBox="0 0 16 16">
                     <circle cx="50%" cy="50%" r="8"/>
                 </svg>
                 {% endif %}
@@ -91,22 +91,24 @@
     </div>
     </div>
     <div class ="row align-items-stretch">
-        <div class="col-3 ms-auto me-auto shadow p-2 mb-5 bg-white rounded">
-            <label>Start Date</label>
-            <input type = "date" id="start_date" name = "start_date"> 
-        </div>
-        <div class="col-3 ms-auto me-auto shadow p-2 mb-5 bg-white rounded">
-            <label for="end_date">End Date</label>
-            <input type = "date" id="end_date" name = "end_date"> 
-        </div>
-        <div class="col-3 ms-auto me-auto shadow p-2 mb-5 bg-white rounded">
-            <label for="multiple-select-field">Properties</label>
-            <select class="form-select" id="multiple-select-field" data-placeholder="Choose properties" multiple>
-                <option value="N" selected>Normal Percent</option>
-                <option value="S">Stressed Percent</option>
-                <option value="L">Lonely Percent</option>
-                <option value="C">Count of Tweets</option>
-            </select>
+        <div class ="row align-items-stretch">
+            <div class="col-lg-2 col-md-3 ms-auto me-auto p-2 mb-2 bg-white rounded">
+                <label for="start_date">Start Date</label>
+                <input class="w-100 form-control" type = "date" id="start_date" name = "start_date"> 
+            </div>
+            <div class="col-lg-2 col-md-3 ms-auto me-auto p-2 mb-2 bg-white rounded">
+                <label for="end_date">End Date</label>
+                <input class="w-100 form-control" type = "date" id="end_date" name = "end_date"> 
+            </div>
+            <div class="col-lg-2 col-md-3 ms-auto me-auto p-2 mb-2 bg-white rounded">
+                <label for="multiple-select-field">Properties</label>
+                <select class="form-select" id="multiple-select-field" data-placeholder="Choose properties" multiple>
+                    <option value="N">Normal Percent</option>
+                    <option value="S">Stressed Percent</option>
+                    <option value="L">Lonely Percent</option>
+                    <option value="C">Count of Tweets</option>
+                </select>
+            </div>
         </div>
     <div class ="row align-items-stretch">
         <div class="col-10 h-100 ms-auto me-auto shadow p-2 mb-5 bg-white rounded">

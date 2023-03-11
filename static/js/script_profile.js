@@ -1,11 +1,3 @@
-$( '#multiple-select-field' ).select2( {
-    theme: "bootstrap-5",
-    width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
-    placeholder: $( this ).data( 'placeholder' ),
-    closeOnSelect: false,
-} );
-
-
 // Get results data to JSON
 var data_string = document.getElementsByClassName('container')[0].getAttribute('data-js-vars').replace(/'/g, '"');
 var string_split = data_string.slice(1, data_string.length-1).split('},').map(s=> s+'}');
@@ -15,6 +7,47 @@ for (let i = 0; i< string_split.length; i++){
     results.push(JSON.parse(string_split[i]) || '{}');
 }
 
+// set multiselect property select
+$( '#multiple-select-field' ).select2( {
+    theme: "bootstrap-5",
+    width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
+    placeholder: $( this ).data( 'placeholder' ),
+    closeOnSelect: false
+});
+$(".select2-search, .select2-focusser").remove();
+
+function getProperties(data){
+    var props = [];
+    for (let i = 0; i < data.length; i++){
+        props.push(data[i].id);
+    }
+    return props;
+}
+
+function setTags($select){
+   var $liElements = $select.next('span.select2').find('ul').find('li');
+   for (var $item of $liElements){
+    $item.classList.add("pb-0", "pe-1", "ps-1", "pt-0", "mb-0");
+}
+   var $spanElements = $liElements.find('span');
+    for (var $item of $spanElements){
+        $item.textContent = $item.textContent.slice(0,1);
+    }
+}
+
+$('#multiple-select-field').on('change', function (e) {
+    const $select = $(this);
+    var data = $select.select2('data');
+    props = getProperties(data);
+    setTags($select);
+    chart.destroy();
+    chart = createChart(filtered_results,props);
+  });
+
+
+
+
+//Ititial variables an fields
 var props = ["N"];
 var filtered_results = [];
 
@@ -24,7 +57,11 @@ document.getElementById('start_date').value = moment().subtract(6, 'months').for
 filtered_results = filter_results_by_date("","", results);
 
 var chart = createChart(results, props)
+$('#multiple-select-field').val('N');
+$('#multiple-select-field').trigger('change');
 
+
+// Date fileds
 function filter_results_by_date(start, end, results){
     if (end===""){
         document.getElementById('end_date').value = moment().format('YYYY-MM-DD');
@@ -49,7 +86,6 @@ function filter_results_by_date(start, end, results){
     return filtered_results
 }
 
-
 $('#start_date').on('change', function (e) {
     var start_date = document.getElementById('start_date').value;
     var end_date = document.getElementById('end_date').value;
@@ -70,23 +106,11 @@ $('#start_date').on('change', function (e) {
 
 
 
-function getProperties(data){
-    var props = [];
-    for (let i = 0; i < data.length; i++){
-        props.push(data[i].id);
-    }
-    return props;
-}
-
-$('#multiple-select-field').on('change', function (e) {
-    var data = $('#multiple-select-field').select2('data');
-    props = getProperties(data);
-    chart.destroy();
-    chart = createChart(filtered_results,props);
-  });
 
 
 
+
+// Create chart
 function createChart(results, properties){
     const ctx = document.getElementById('myChart');
     var labels = [];

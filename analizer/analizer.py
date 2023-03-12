@@ -40,10 +40,12 @@ def change_status(worker, new_status_id):
 def save_results(worker, date, probs, count):
     employee = Employee.objects.get(employee_id=worker['employee_id_id'])
     prev_res = Result.objects.filter(employee_id=employee).order_by('-scan_date').values_list('scan_date', flat=True)[0]
+    result = {"percent_N" : probs[0], "percent_S": probs[1], "percent_L" : probs[2],
+    "count_N" : count[0], "count_S" : count[1], "count_L" : count[2]}
+    result['status'] = analize_results(result)
     Result.objects.update_or_create(
     employee_id=employee, scan_date = date,
-    defaults={"percent_N" : probs[0], "percent_S": probs[1], "percent_L" : probs[2],
-    "count_N" : count[0], "count_S" : count[1], "count_L" : count[2]},
+    defaults=result,
     )
     if prev_res<date:
         return 'change'

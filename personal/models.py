@@ -55,6 +55,7 @@ class Username(models.Model):
 
     
 class Result(models.Model):
+    STATUS_OPTIONS = (('L','Low'), ('M','Moderate'), ('H','High'),('N','No data'))
     employee_id =models.ForeignKey(Employee, on_delete=models.CASCADE)
     scan_date = models.DateField(verbose_name="scan date")
     percent_N = models.FloatField()
@@ -63,6 +64,7 @@ class Result(models.Model):
     count_N = models.IntegerField()
     count_S =models.IntegerField()
     count_L =models.IntegerField()
+    status =models.CharField(max_length=10,choices=STATUS_OPTIONS, default='N')
 
     class Meta:
         unique_together = (("employee_id", "scan_date"),)

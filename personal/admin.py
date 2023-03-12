@@ -28,8 +28,8 @@ class EmployeeAdmin(UserAdmin):
 admin.site.register(Employee, EmployeeAdmin)
 
 class ResultAdmin(UserAdmin):
-    list_display = ('employee_id','scan_date','percent_N','percent_S','percent_L','count_N','count_S','count_L')
-    search_fields = ('employee_id','scan_date')
+    list_display = ('employee_id','scan_date','percent_N','percent_S','percent_L','count_N','count_S','count_L', 'status')
+    search_fields = ('employee_id','scan_date', 'status')
     readonly_fields = ()
     ordering = ('employee_id','scan_date')
 

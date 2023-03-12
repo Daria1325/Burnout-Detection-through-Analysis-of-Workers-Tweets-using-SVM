@@ -2,40 +2,9 @@
 {% load static %}
 {% block content %}
 
-
-
-<div class="container bg-light">
-
-  <!--Scanning button  -->
-<div class="col-md-12 text-center pt-5">
-  <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#scaningForm">
-    START SCANNING
-  </button>
-</div>
-
-{% include 'personal/modal_scaning.html' %}
-
-  <!--Navigation tabs  -->
-<nav class="pt-5">
-  <div class="nav nav-tabs" id="nav_tab" role="tablist">
-      <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"
-      data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home"
-      aria-selected="true">All employees</button>
-
-      <button class="nav-link" id="nav-grouped-tab" data-bs-toggle="tab"
-      data-bs-target="#nav-grouped" type="button" role="tab" aria-controls="nav-grouped"
-      aria-selected="false">Grouped</button>
-
-      <button class="nav-link" id="nav-statistic-tab" data-bs-toggle="tab"
-      data-bs-target="#nav-statistic" type="button" role="tab" aria-controls="nav-statistic"
-      aria-selected="false">Statistic</button>
-  </div>
-</nav>
+<div class="container  shadow mb-5 bg-light-subtle">
+  {% include 'personal/snippets/body_header.html' %}
   <!--Content of tabs  -->
-<div class="tab-content" id="nav-tabContent">
-    <!--All employees  -->
-  <div class="tab-pane fade show active p-3" id="nav-home" role="tabpanel"
-  aria-labelledby="nav-home-tab">
   <div>
     <input class="form-control mb-4" id="tableSearch" type="text" placeholder="Search..">
 
@@ -77,31 +46,8 @@
         {% endfor %}        
       </tbody>
     </table>
-</div>
-
-  </div>
-  <!--Grouped  -->
-  <div class="tab-pane fade show p-3" id="nav-grouped" role="tabpanel"
-  aria-labelledby="nav-grouped-tab">
-  {% include 'personal/grouped.html' %}
-
-
-  </div>
-  <!--Statistic  -->
-  <div class="tab-pane fade show p-3" id="nav-statistic" role="tabpanel"
-  aria-labelledby="nav-statistic-tab">
-  <div>
-    STATISTIC
-</div>
-
-  </div>
-</div>  
+</div> 
 
 </div>
-
-
-   
-
-
 
 {% endblock content %}

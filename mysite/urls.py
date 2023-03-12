@@ -20,6 +20,8 @@ from django.conf.urls.static import static
 
 from personal.views import(
     home_screen_view,
+    grouped_screen_view,
+    statistic_screen_view,
 )
 
 from account.views import(
@@ -39,6 +41,9 @@ from employee.views import(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home_screen_view, name = "home"),
+    path('grouped/', grouped_screen_view, name = "grouped"),
+    path('statistic/', statistic_screen_view, name = "statistic"),
+    path('statistic/<str:start_date>/<str:end_date>/<str:group>/<str:chart>/', statistic_screen_view, name = "statistic"),
     path('logout/', logout_view,name = "logout"),
     path('login/', login_view,name = "login"),
     path('documentation/', documentation_view,name = "documentation"),

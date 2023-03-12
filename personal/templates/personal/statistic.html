@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container shadow mb-5 bg-light-subtle" data-js-vars="{{ results }}">
+  {% include 'personal/snippets/body_header.html' %}
+  <!--Statistic  -->
+        <div class ="row align-items-stretch">
+            <div class ="row align-items-stretch">
+                <div class="col-lg-2 col-md-3 ms-auto me-auto p-2 mb-2 bg-white rounded">
+                    <label for="start_date">Start Date</label>
+                    <input class="w-100 form-control" type = "date" id="start_date" name = "start_date"> 
+                </div>
+                <div class="col-lg-2 col-md-3 ms-auto me-auto p-2 mb-2 bg-white rounded">
+                    <label for="end_date">End Date</label>
+                    <input class="w-100 form-control" type = "date" id="end_date" name = "end_date"> 
+                </div>
+                <div class="col-lg-2 col-md-3 ms-auto me-auto p-2 mb-2 bg-white rounded">
+                    <label for="select_group">Group By</label>
+                    <select class="form-select" id="select_group" data-placeholder="Select Group">
+                        <option value="Date">Date</option>
+                        <option value="Position">Position</option>
+                        <option value="Time">Working Period</option>
+                    </select>
+                </div>
+                <div class="col-lg-2 col-md-3 ms-auto me-auto p-2 mb-2 bg-white rounded">
+                    <label for="select_chart">Chart Type</label>
+                    <select class="form-select" id="select_chart" data-placeholder="Select Chart">
+                        <option value="Pie">Pie</option>
+                        <option value="Line">Line</option>
+                        <option value="Column">Column</option>
+                        <option value="Stucked">Stucked Column</option>
+                    </select>
+                </div>
+            </div>
+        <div class ="row align-items-stretch">
+            <div class="col-10 h-100 ms-auto me-auto shadow p-2 mb-5 bg-white rounded">
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+
+</div>  
+
+<script src="https://momentjs.com/downloads/moment.min.js"></script>  
+<script src="{% static 'js/script_statistic.js' %}"></script>
+
+{% endblock content %}

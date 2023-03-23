@@ -1,3 +1,15 @@
+
+if(window.location.pathname.includes("grouped")){
+  document.getElementById("grouped_tab").classList.add("active");
+}
+if(window.location.pathname=="/"){
+  document.getElementById("all_employees_tab").classList.add("active");
+}
+if(window.location.pathname.includes("statistic")){
+  document.getElementById("statistic_tab").classList.add("active");
+}
+
+
 // FIlter anything
 $(document).ready(function(){
     $("#anythingSearch").on("keyup", function() {

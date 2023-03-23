@@ -36,14 +36,20 @@ $('#select_group').on('change', function (e) {
   });
 
 var chart;
-if (dataForChart['chart']== 'Line'){
+if (dataForChart['chart']== 'Line' && dataForChart['group']!='Position'){
     chart = createLineChartDate(dataForChart);
 }
-if (dataForChart['chart']== 'Pie'){
+if (dataForChart['chart']== 'Line' && dataForChart['group']=='Position'){
+  chart = createLineChartPosition(dataForChart);
+}
+if (dataForChart['chart']== 'Pie' && dataForChart['group']=='Date'){
   chart = createPieChartDate(dataForChart);
 }
+if (dataForChart['chart']== 'Pie' && dataForChart['group']!='Date'){
+  createPieChartPosition(dataForChart);
+}
 if (dataForChart['chart']== 'Column' || dataForChart['chart']== 'Stucked'){
-  chart = createBarChartDate(dataForChart);
+  chart = createBarChart(dataForChart);
 }
 
 function createLineChartDate(dataForChart){
@@ -97,6 +103,69 @@ function createLineChartDate(dataForChart){
     return chart;
 }
 
+function createLineChartPosition(dataForChart){
+  const ctx = document.getElementById('myChart');
+  var labels = dataForChart['labels'];
+
+  var dataset = []
+  for (var i = 0; i< dataForChart['positions'].length;i++){
+    dataset.push({
+      label: dataForChart['positions'][i]+'_Low',
+      data: dataForChart['L'][i],
+      fill: false,
+      borderColor: '#25BE4B',
+      tension: 0.5
+    })
+  }
+  for (var i = 0; i< dataForChart['positions'].length;i++){
+    dataset.push({
+      label: dataForChart['positions'][i]+'_Moderate',
+      data: dataForChart['M'][i],
+      fill: false,
+      borderColor: '#FFA550',
+      tension: 0.5
+    })
+  }
+  for (var i = 0; i< dataForChart['positions'].length;i++){
+    dataset.push({
+      label: dataForChart['positions'][i]+'_High',
+      data: dataForChart['H'][i],
+      fill: false,
+      borderColor: '#BE253A',
+      tension: 0.5
+    })
+  }
+  for (var i = 0; i< dataForChart['positions'].length;i++){
+    dataset.push({
+      label: dataForChart['positions'][i]+'_No Data',
+      data: dataForChart['N'][i],
+      fill: false,
+      borderColor: '#282E30',
+      tension: 0.5
+    })
+  }
+  
+  const data = {
+    labels: labels,
+    datasets: dataset
+  };
+  
+  const config = {
+      type: 'line',
+      data: data,
+      options: {
+          scales: {
+              y: {
+                  suggestedMin: 0
+              }
+          }
+      }
+  };
+  
+  chart = new Chart(ctx, config);
+  return chart;
+}
+
 function createPieChartDate(dataForChart){
   const ctx = document.getElementById('myChart');
   
@@ -118,7 +187,46 @@ function createPieChartDate(dataForChart){
   return chart;
 }
 
-function createBarChartDate(dataForChart){
+function createPieChartPosition(dataForChart){
+  const ctx1 = document.getElementById('myChart');
+  const ctx2 = document.getElementById('myChart1');
+  const ctx3 = document.getElementById('myChart2');
+  const ctx4 = document.getElementById('myChart3');
+  const dataForCharts = dataForChart['chartData'];
+  
+  var count = 1;
+  for (const item in dataForCharts){
+    var data = {
+      labels: dataForCharts[item]['labels'],
+      datasets: [{
+        data: dataForCharts[item]['count'],
+        backgroundColor: dataForCharts[item]['backgroundColor'],
+        hoverOffset: 4
+      }]
+    };
+    
+    var config = {
+      type: 'pie',
+      data: data,
+    };
+    if (count==1){
+      new Chart(ctx1, config);
+    }
+    if (count==2){
+      new Chart(ctx2, config);
+    }
+    if (count==3){
+      new Chart(ctx3, config);
+    }
+    if (count==4){
+      new Chart(ctx4, config);
+    }
+    count+=1;
+    
+  }
+}
+
+function createBarChart(dataForChart){
   const ctx = document.getElementById('myChart');
   
   const labels = dataForChart['labels'];

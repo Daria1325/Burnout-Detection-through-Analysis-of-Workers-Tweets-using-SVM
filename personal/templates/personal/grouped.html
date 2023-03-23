@@ -2,30 +2,34 @@
 {% load static %}
 {% block content %}
 
-<div class="container bg-light  shadow mb-5 bg-light-subtle">
+<div class="container mb-5" data-js-vars="{{ all_results }}">
+  <script>
+    var url = "{% url 'profile' 0 %}";
+    document.getElementsByClassName('container')[0].setAttribute('data-url',url);
+  </script>
   {% include 'personal/snippets/body_header.html' %}
   <!--Navigation tabs  -->
   <nav>
     <div class="nav nav-tabs" id="nav_tab_grouped" role="tablist">
         <button class="nav-link active" id="nav-high-tab" data-bs-toggle="tab"
         data-bs-target="#nav-high" type="button" role="tab" aria-controls="nav-high"
-        aria-selected="true">High</button>
+        aria-selected="true" category = "H">High</button>
   
         <button class="nav-link" id="nav-moderate-tab" data-bs-toggle="tab"
         data-bs-target="#nav-moderate" type="button" role="tab" aria-controls="nav-moderate"
-        aria-selected="false">Moderate</button>
+        aria-selected="false" category = "M">Moderate</button>
   
         <button class="nav-link" id="nav-low-tab" data-bs-toggle="tab"
         data-bs-target="#nav-low" type="button" role="tab" aria-controls="nav-low"
-        aria-selected="false">Low</button>
+        aria-selected="false" category = "L">Low</button>
 
         <button class="nav-link" id="nav-improved-tab" data-bs-toggle="tab"
         data-bs-target="#nav-improved" type="button" role="tab" aria-controls="nav-improved"
-        aria-selected="false">Improved</button>
+        aria-selected="false" category = "I">Improved</button>
 
         <button class="nav-link" id="nav-worsened-tab" data-bs-toggle="tab"
         data-bs-target="#nav-worsened" type="button" role="tab" aria-controls="nav-worsened"
-        aria-selected="false">Worsened</button>
+        aria-selected="false" category = "W">Worsened</button>
     </div>
   </nav>
 
@@ -34,24 +38,10 @@
   <!-- High -->
   <div class="tab-pane fade show active p-3" id="nav-high" role="tabpanel"
   aria-labelledby="nav-high-tab">
-  <div>
-    <input class="form-control mb-4" id="tableSearch" type="text" placeholder="Search..">
-
+  <input class="form-control mb-4" id="tableSearch" type="text" placeholder="Search..">
+  <div class="overflow-y-auto hide-scroll" style="max-height: 41vh;">
     <table class="table table-bordered table-striped">
-      
-      <tbody id="myTable">
-        {% for emp in all_results %}
-        {% if emp.state == "H" %}
-        <tr>
-          <td class="col-11">
-            <a class="text-decoration-none link-dark" href="{% url 'profile' id=emp.id %}">
-              <h3>{{emp.name}}</h3> <p>{{emp.note}}</p>
-              </a>
-          </td>
-          <td class="bg-danger col-1 "></td>          
-        </tr>
-        {% endif %}
-        {% endfor %}   
+      <tbody id="myTable_H">  
       </tbody>
     </table>
   </div>
@@ -60,24 +50,11 @@
   <!--Moderate  -->
   <div class="tab-pane fade show p-3" id="nav-moderate" role="tabpanel"
   aria-labelledby="nav-moderate-tab">
-  <div>
-    <input class="form-control mb-4" id="tableSearch" type="text" placeholder="Search..">
+  <input class="form-control mb-4" id="tableSearch" type="text" placeholder="Search..">
 
+  <div class="overflow-y-auto hide-scroll" style="max-height: 41vh;">
     <table class="table table-bordered table-striped">
-      
-      <tbody id="myTable">
-        {% for emp in all_results %}
-        {% if emp.state == "M" %}
-        <tr>
-          <td class="col-11">
-            <a class="text-decoration-none link-dark" href="{% url 'profile' id=emp.id %}">
-              <h3>{{emp.name}}</h3> <p>{{emp.note}}</p>
-              </a>
-          </td>
-          <td class="bg-warning col-1 "></td>          
-        </tr>
-        {% endif %}
-        {% endfor %}   
+      <tbody id="myTable_M">  
       </tbody>
     </table>
   </div>
@@ -86,24 +63,12 @@
   <!--Low  -->
   <div class="tab-pane fade show p-3" id="nav-low" role="tabpanel"
   aria-labelledby="nav-low-tab">
-  <div>
-    <input class="form-control mb-4" id="tableSearch" type="text" placeholder="Search..">
+  <input class="form-control mb-4" id="tableSearch" type="text" placeholder="Search..">
+  <div class="overflow-y-auto hide-scroll" style="max-height: 41vh;">
 
     <table class="table table-bordered table-striped">
       
-      <tbody id="myTable">
-        {% for emp in all_results %}
-        {% if emp.state == "L" %}
-        <tr>
-          <td class="col-11">
-            <a class="text-decoration-none link-dark" href="{% url 'profile' id=emp.id %}">
-              <h3>{{emp.name}}</h3> <p>{{emp.note}}</p>
-              </a>
-          </td>
-          <td class="bg-success col-1 "></td>          
-        </tr>
-        {% endif %}
-        {% endfor %}   
+      <tbody id="myTable_L"> 
       </tbody>
     </table>
   </div>
@@ -112,35 +77,13 @@
   <!--Improved  -->
   <div class="tab-pane fade show p-3" id="nav-improved" role="tabpanel"
   aria-labelledby="nav-improved-tab">
-  <div>
-    <input class="form-control mb-4" id="tableSearch" type="text" placeholder="Search..">
+  <input class="form-control mb-4" id="tableSearch" type="text" placeholder="Search..">
+
+  <div class="overflow-y-auto hide-scroll" style="max-height: 41vh;">
 
     <table class="table table-bordered table-striped">
       
-      <tbody id="myTable">
-        {% for emp in all_results %}
-        {% if emp.progress == "I" %}
-        <tr>
-          <td class="col-11">
-            <a class="text-decoration-none link-dark" href="{% url 'profile' id=emp.id %}">
-              <h3>{{emp.name}}</h3> <p>{{emp.note}}</p>
-              </a>
-          </td>
-          {% if emp.state == "L" %}
-          <td class="bg-success col-1 "></td>
-          {% endif %}
-          {% if emp.state == "M" %}
-          <td class="bg-warning col-1 "></td>
-          {% endif %}
-          {% if emp.state == "H" %}
-          <td class="bg-danger col-1 "></td>
-          {% endif %}
-          {% if emp.state == "N" %}
-          <td class="bg-dark col-1 "></td>
-          {% endif %}        
-        </tr>
-        {% endif %}
-        {% endfor %}   
+      <tbody id="myTable_I"> 
       </tbody>
     </table>
   </div>
@@ -149,35 +92,10 @@
   <!--Worsened  -->
   <div class="tab-pane fade show p-3" id="nav-worsened" role="tabpanel"
   aria-labelledby="nav-worsened-tab">
-  <div>
-    <input class="form-control mb-4" id="tableSearch" type="text" placeholder="Search..">
-
+  <input class="form-control mb-4" id="tableSearch" type="text" placeholder="Search..">
+  <div class="overflow-y-auto hide-scroll" style="max-height: 41vh;">
     <table class="table table-bordered table-striped">
-      
-      <tbody id="myTable">
-        {% for emp in all_results %}
-        {% if emp.progress == "W" %}
-        <tr>
-          <td class="col-11">
-            <a class="text-decoration-none link-dark" href="{% url 'profile' id=emp.id %}">
-              <h3>{{emp.name}}</h3> <p>{{emp.note}}</p>
-              </a>
-          </td>
-          {% if emp.state == "L" %}
-          <td class="bg-success col-1 "></td>
-          {% endif %}
-          {% if emp.state == "M" %}
-          <td class="bg-warning col-1 "></td>
-          {% endif %}
-          {% if emp.state == "H" %}
-          <td class="bg-danger col-1 "></td>
-          {% endif %}
-          {% if emp.state == "N" %}
-          <td class="bg-dark col-1 "></td>
-          {% endif %}        
-        </tr>
-        {% endif %}
-        {% endfor %}   
+      <tbody id="myTable_W">  
       </tbody>
     </table>
   </div>
@@ -185,7 +103,7 @@
 
 </div>
 </div>
-
+<script src="{% static 'js/script_table.js' %}"></script>
 {% endblock content %} 
   
   

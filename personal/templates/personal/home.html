@@ -2,52 +2,26 @@
 {% load static %}
 {% block content %}
 
-<div class="container  shadow mb-5 bg-light-subtle">
+
+
+<div class="container mb-5" data-js-vars="{{ all_results }}">
+  <script>
+    var url = "{% url 'profile' 0 %}";
+    document.getElementsByClassName('container')[0].setAttribute('data-url',url);
+  </script>
   {% include 'personal/snippets/body_header.html' %}
   <!--Content of tabs  -->
-  <div>
     <input class="form-control mb-4" id="tableSearch" type="text" placeholder="Search..">
-
-    <table class="table table-striped">
-      
-      <tbody id="myTable">
-        {% for emp in all_results %}
-        <tr>
-          {% if emp.state == "L" %}
-          <td class="col-11 border-bottom-0 border-top-0 border-left-0 border-success" style="border-width: 10px;">
-            <a class="text-decoration-none link-dark" href="{% url 'profile' id=emp.id %}">
-            <h3>{{emp.name}}</h3> <p>{{emp.note}}</p>
-            </a>
-          </td>
-          {% endif %}
-          {% if emp.state == "M" %}
-          <td class="col-11 border-bottom-0 border-top-0 border-left-0 border-warning" style="border-width: 10px;"> 
-            <a class="text-decoration-none link-dark" href="{% url 'profile' id=emp.id %}">
-            <h3>{{emp.name}}</h3> <p>{{emp.note}}</p>
-            </a>
-          </td>
-          {% endif %}
-          {% if emp.state == "H" %}
-          <td class="col-11 border-bottom-0 border-top-0 border-left-0 border-danger" style="border-width: 10px;">
-            <a class="text-decoration-none link-dark" href="{% url 'profile' id=emp.id %}">
-            <h3>{{emp.name}}</h3> <p>{{emp.note}}</p>
-            </a>
-          </td>
-          {% endif %}
-          {% if emp.state == "N" %}
-          <td class="col-11 border-bottom-0 border-top-0 border-left-0 border-dark" style="border-width: 10px;">
-            <a class="text-decoration-none link-dark" href="{% url 'profile' id=emp.id %}">
-            <h3>{{emp.name}}</h3> <p>{{emp.note}}</p>
-            </a>
-          </td>
-          {% endif %}
+    <div class="overflow-y-auto hide-scroll" style="max-height: 50vh;">
+      <table class="table table-striped">
         
-        </tr>
-        {% endfor %}        
-      </tbody>
-    </table>
-</div> 
+        <tbody id="myTable">     
+        </tbody>
+      </table>
+  </div> 
+  </div>
+ 
 
 </div>
-
+<script src="{% static 'js/script_table.js' %}"></script>
 {% endblock content %}

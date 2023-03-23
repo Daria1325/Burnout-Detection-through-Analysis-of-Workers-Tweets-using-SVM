@@ -1,21 +1,21 @@
   <!--Scanning button  -->
-  <div class="col-md-12 text-center pt-5">
+  <div class="col-md-12 text-center mb-5 mt-5">
     <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#scaningForm">
       START SCANNING
     </button>
   </div>
   
   {% include 'personal/modal_scaning.html' %}
-  
+  <div class="shadow col-md-12 bg-light-subtle">
     <!--Navigation tabs  -->
-    <ul class="nav nav-tabs mb-1">
+    <ul class="nav nav-tabs mb-1 pt-2">
       <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="/">All employees</a>
+        <a class="nav-link" id="all_employees_tab" href="/">All employees</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/grouped">Grouped</a>
+        <a class="nav-link" id="grouped_tab" href="/grouped">Grouped</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/statistic">Statistic</a>
+        <a class="nav-link" id="statistic_tab" href="/statistic">Statistic</a>
       </li>
     </ul>

@@ -5,7 +5,7 @@
 <div class="container mb-5" data-js-vars="{{ results }}">
   {% include 'personal/snippets/body_header.html' %}
   <!--Statistic  -->
-        <div class ="row align-items-stretch">
+        <div class ="row align-items-stretch justify-content-center">
             <div class ="row align-items-stretch">
                 <div class="col-lg-2 col-md-3 ms-auto me-auto p-2 mb-2 bg-white rounded">
                     <label for="start_date">Start Date</label>
@@ -34,19 +34,19 @@
                 </div>
             </div>
         <div class ="row align-items-stretch mb-4">
-            <div class="col-10 h-100 ms-auto me-auto  shadow p-2 bg-white rounded text-center">
+            <div id="chartContainer" class="col-10 ms-auto me-auto  shadow p-2 bg-white rounded text-center" style="position: relative; height:50vh; width:80vw">
                 {% if 'Position/Pie' in request.path or  'Time/Pie' in request.path %}
                 <div class="row justify-content-center">
-                    <div class="col-5">Low</canvas></div>
-                    <div class="col-5">Medium</canvas></div>
+                    <div class="col-5">Low</div>
+                    <div class="col-5">Medium</div>
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-5"><canvas id="myChart"></canvas></div>
                     <div class="col-5"><canvas id="myChart1"></canvas></div>
                 </div>
                 <div class="row justify-content-center mt-5">
-                    <div class="col-5">High</canvas></div>
-                    <div class="col-5">No Data</canvas></div>
+                    <div class="col-5">High</div>
+                    <div class="col-5">No Data</div>
                 </div>
                <div class="row justify-content-center">
                 <div class="col-5"><canvas id="myChart2"></canvas></div>
@@ -54,7 +54,7 @@
                </div>
                 
                 {% else %}
-                <canvas id="myChart"></canvas>
+                <canvas id="myChart" class="m-auto"></canvas>
                 {% endif %}
             </div>
         </div>
@@ -63,7 +63,7 @@
 
 </div>  
 
-<script src="https://momentjs.com/downloads/moment.min.js"></script>  
+<!-- <script src="https://momentjs.com/downloads/moment.min.js"></script>   -->
 <script src="{% static 'js/script_statistic.js' %}"></script>
 
 {% endblock content %}

@@ -1,15 +1,25 @@
 from django import forms
+from django.forms import DateInput
+from datetime import date as dt
 
 
-class DateInput(forms.DateInput):
-    input_type = 'date'
-    attrs = {
-                'class': "form-control validate", 
-                'style': 'max-width: 300px;',
-                'placeholder': 'Enter date'
-                }
 
 class ScanFrom(forms.Form):
-    date = forms.DateField(label="Scan date", widget=DateInput)
-
-    position = forms.ChoiceField(label ="Position" ,choices=[('backend_developer',"Backend Developer"),('project_manager','Project Manager'),('designer','Designer')])
+    date = forms.DateField(
+        initial=dt.today(),
+        label="Scan date",
+        widget=forms.DateInput(attrs={
+            'type':'date',
+            'class': 'form-control validate',
+            'style': 'max-width: 300px;',
+            'placeholder': 'Enter date',
+            'max': dt.today()
+        }))
+    position = forms.ChoiceField(
+        label ="Position" ,
+        choices=[('backend_developer',"Backend Developer"),('project_manager','Project Manager'),('designer','Designer')],
+        widget=forms.Select(attrs={
+            'class': 'form-control validate',
+            'style': 'max-width: 300px;'
+        })
+        )

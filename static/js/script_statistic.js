@@ -5,6 +5,10 @@ var dataForChart = JSON.parse(data_string);
 
 document.getElementById('end_date').value = dataForChart['end_date'];
 document.getElementById('start_date').value = dataForChart['start_date'];
+var now = new Date(), maxDate = now.toISOString().substring(0,10);
+document.getElementById('end_date').setAttribute('max',maxDate);
+document.getElementById('start_date').setAttribute('max',maxDate);
+
 $("#select_chart").val(dataForChart['chart']).trigger('change.select2');
 $("#select_group").val(dataForChart['group']).trigger('change.select2');
 
@@ -168,6 +172,7 @@ function createLineChartPosition(dataForChart){
 
 function createPieChartDate(dataForChart){
   const ctx = document.getElementById('myChart');
+  // document.getElementById('chartContainer').setAttribute('style', 'position: relative; width:80vw; height:50vh;');
   
   const data = {
     labels: dataForChart['labels'],
@@ -181,6 +186,16 @@ function createPieChartDate(dataForChart){
   const config = {
     type: 'pie',
     data: data,
+    options: {
+      plugins: {
+          legend: {
+              display: true,
+              position: 'right'
+          }
+      },
+      maintainAspectRatio: false,
+      responsive: true
+  }
   };
   
   chart = new Chart(ctx, config);

@@ -30,7 +30,6 @@ def getAverage(arr):
 
 def change_status(worker, new_status_id):
     emp = Employee.objects.get(employee_id=worker['employee_id_id'])
-    print(new_status_id)
     state = State.objects.get(state_id=new_status_id)
    
     emp.state_id = state
@@ -39,7 +38,6 @@ def change_status(worker, new_status_id):
 
 def save_results(worker, date, probs, count):
     employee = Employee.objects.get(employee_id=worker['employee_id_id'])
-    prev_res = Result.objects.filter(employee_id=employee).order_by('-scan_date').values_list('scan_date', flat=True)[0]
     result = {"percent_N" : probs[0], "percent_S": probs[1], "percent_L" : probs[2],
     "count_N" : count[0], "count_S" : count[1], "count_L" : count[2]}
     result['status'] = analize_results(result)
@@ -47,10 +45,6 @@ def save_results(worker, date, probs, count):
     employee_id=employee, scan_date = date,
     defaults=result,
     )
-    if prev_res<date:
-        return 'change'
-    else:
-        return 'no_change'
 
 
 def analize_results(results):
@@ -91,7 +85,6 @@ def form_new_status(worker):
     if last_results.count() >1:
         prev_result_status = analize_results(last_results[1])
         new_status_id=find_new_status_id(last_result_status,prev_result_status)
-        
     else:
         new_status_id=find_new_status_id(last_result_status)
     

@@ -4,6 +4,7 @@ from django.db.models import Count
 from datetime import date as dt
 from dateutil.relativedelta import relativedelta
 import random
+import numpy as np
 
 from .forms import ScanFrom
 from analizer import main as analizer
@@ -67,34 +68,6 @@ def grouped_screen_view(request):
     context = {'form':form,
                 'all_results': res}  
     return render(request, 'personal/grouped.html',context)
-# date position ( date of start - today) status
-
-def getStatistic(start_date, end_date, group, chart):
-    # if date
-    {
-        'date':'',
-        'count_L':'',
-        'count_M':'',
-        'count_H':'',
-        'count_N':''
-    }
-
-    #if position
-    {
-        'position':'',
-        'count_L':'',
-        'count_M':'',
-        'count_H':'',
-        'count_N':''
-    }
-    #if time
-    {
-        'time':'',
-        'count_L':'',
-        'count_M':'',
-        'count_H':'',
-        'count_N':''
-    }
 
 def pairDateAndValue(dates, values):
     result = []
@@ -114,7 +87,9 @@ def pairDateAndValue(dates, values):
 def getStatistic(start_date, end_date, group, chart):
     if group == 'Date':
         if chart == 'Line' or chart == 'Column' or chart == 'Stucked':
-            dates = list(set(Result.objects.filter(scan_date__gte=start_date).filter(scan_date__lte=end_date).order_by('scan_date').values_list('scan_date', flat=True)))
+           # dates = list(set(Result.objects.filter(scan_date__gte=start_date).filter(scan_date__lte=end_date).order_by('scan_date').values_list('scan_date', flat=True)))
+            dates= list(np.unique(np.array(Result.objects.filter(scan_date__gte=start_date).filter(scan_date__lte=end_date).order_by('scan_date').values_list('scan_date', flat=True))))
+
             count_L = list(Result.objects.filter(scan_date__gte=start_date).filter(scan_date__lte=end_date).filter(status='L').order_by('scan_date').values('scan_date').annotate(Count('status')))
             count_M = list(Result.objects.filter(scan_date__gte=start_date).filter(scan_date__lte=end_date).filter(status='M').order_by('scan_date').values('scan_date').annotate(Count('status')))
             count_H = list(Result.objects.filter(scan_date__gte=start_date).filter(scan_date__lte=end_date).filter(status='H').order_by('scan_date').values('scan_date').annotate(Count('status')))
@@ -126,6 +101,8 @@ def getStatistic(start_date, end_date, group, chart):
 
             for i, date in enumerate(dates):
                 dates[i] = date.strftime("%Y/%m/%d")
+            
+
             return {
                 'start_date': start_date,
                 'end_date': end_date,

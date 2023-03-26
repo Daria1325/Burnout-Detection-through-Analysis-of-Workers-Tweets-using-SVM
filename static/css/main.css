@@ -14,3 +14,14 @@
 .hide-scroll::-webkit-scrollbar { 
     display: none;  /* Safari and Chrome */
 }
+
+.chart_lg{
+    position: relative;
+    height: 46vh; 
+    width: 80vw;
+}
+.chart_sm{
+    position: relative;
+    height: 30vh; 
+    width: 80vw;
+}

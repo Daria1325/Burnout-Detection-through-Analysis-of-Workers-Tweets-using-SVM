@@ -91,10 +91,14 @@ function createLineChartDate(dataForChart){
       datasets: datasets
     };
     
+    
+
     const config = {
         type: 'line',
         data: data,
+        
         options: {
+          maintainAspectRatio: false,         
             scales: {
                 y: {
                     suggestedMin: 0
@@ -158,6 +162,13 @@ function createLineChartPosition(dataForChart){
       type: 'line',
       data: data,
       options: {
+        maintainAspectRatio: false,
+        plugins:{
+          legend: {
+            display: true,
+            position: 'right'
+          }
+        },
           scales: {
               y: {
                   suggestedMin: 0
@@ -172,7 +183,7 @@ function createLineChartPosition(dataForChart){
 
 function createPieChartDate(dataForChart){
   const ctx = document.getElementById('myChart');
-  // document.getElementById('chartContainer').setAttribute('style', 'position: relative; width:80vw; height:50vh;');
+  document.getElementById('chartContainer').classList.add('col-lg-5');
   
   const data = {
     labels: dataForChart['labels'],
@@ -188,13 +199,17 @@ function createPieChartDate(dataForChart){
     data: data,
     options: {
       plugins: {
+          title:{
+            display: true,
+           text:  'The results of all employees in this time period',
+          },
           legend: {
               display: true,
               position: 'right'
           }
       },
       maintainAspectRatio: false,
-      responsive: true
+      
   }
   };
   
@@ -203,6 +218,9 @@ function createPieChartDate(dataForChart){
 }
 
 function createPieChartPosition(dataForChart){
+  
+  document.getElementById('chartContainer').classList.remove("chart_lg");
+
   const ctx1 = document.getElementById('myChart');
   const ctx2 = document.getElementById('myChart1');
   const ctx3 = document.getElementById('myChart2');
@@ -219,10 +237,35 @@ function createPieChartPosition(dataForChart){
         hoverOffset: 4
       }]
     };
+
+    var title = "";
+    if (count==1){
+      title = "Low";
+    }else if (count==2){
+      title = "Medium";
+    }else if (count==3){
+      title = "High";
+    }else{
+      title = "No Data";
+    }
     
     var config = {
       type: 'pie',
       data: data,
+      options: {
+        plugins: {
+            title:{
+              display: true,
+             text:  title
+            },
+            legend: {
+                display: true,
+                position: 'right'
+            }
+        },
+        maintainAspectRatio: false,
+        
+    }
     };
     if (count==1){
       new Chart(ctx1, config);
@@ -273,6 +316,7 @@ function createBarChart(dataForChart){
     type: 'bar',
     data: data,
     options: {
+      maintainAspectRatio: false,
       scales: {
         y: {
           beginAtZero: true
@@ -283,7 +327,7 @@ function createBarChart(dataForChart){
 
   if (dataForChart['chart']=='Stucked'){
       config['options'] = {
-        responsive: true,
+        maintainAspectRatio: false,
         scales: {
           x: {
             stacked: true,

@@ -29,6 +29,7 @@ class Twitter(object):
 
 
     def get_tweets(self,username,end_date):
+            print(type(end_date))
             api = self.config(self.config_path)
             start_date = end_date + relativedelta(months=-1)
             number_of_tweets=200

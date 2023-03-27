@@ -1,9 +1,13 @@
 import pickle
 import numpy as np
 import analizer.Tweets as tw
+from datetime import datetime
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+from celery import shared_task
+from celery_progress.backend import ProgressRecorder
 from personal.models import Employee, State, Result
+import time
 
 def openFiles():
     f = open("analizer\data\\alldata.txt", "r")
@@ -91,11 +95,13 @@ def form_new_status(worker):
     change_status(worker,new_status_id)
 
 
-
-def analize_tweets(workers,date):
+@shared_task(bind=True)
+def analize_tweets(self,workers,date):
+    progress_recorder = ProgressRecorder(self)
     textData,model=openFiles()
     i=0
     twitter = tw.Twitter()
+    date = datetime.strptime(str(date), "%Y-%m-%d").date()
     for worker in workers:
         tweets = twitter.get_tweets(worker['username'],date)
         results = []
@@ -110,7 +116,6 @@ def analize_tweets(workers,date):
         average = getAverage(results)
         save_results(worker,date,average[0], average[1])
         form_new_status(worker)      
-       
         i+=1
-
-    return     
+        progress_recorder.set_progress(i,len(workers))
+    return ''  

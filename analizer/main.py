@@ -12,5 +12,5 @@ def run_anilizer(date,position):
     
     date = datetime.strptime(date, "%Y-%m-%d").date()
     
-    analize_tweets(employees,date)
+    
 

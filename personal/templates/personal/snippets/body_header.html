@@ -4,7 +4,18 @@
       START SCANNING
     </button>
   </div>
-  
+  {% if task_id %}
+  <div class='progress-wrapper progress'>
+    <div id='progress-bar' class='progress-bar' style="background-color: #68a9ef; width: 0%;">&nbsp;</div>
+  </div>
+  <div id="progress-bar-message">Waiting for scaning to start...</div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var progressUrl = "{% url 'celery_progress:task_status' task_id %}";
+      CeleryProgressBar.initProgressBar(progressUrl);
+    });
+  </script>
+  {% endif %}
   {% include 'personal/modal_scaning.html' %}
   <div class="shadow col-md-12 bg-light-subtle">
     <!--Navigation tabs  -->

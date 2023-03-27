@@ -2,15 +2,17 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
 from datetime import date as dt
+from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import random
 import numpy as np
 
 from .forms import ScanFrom
-from analizer import main as analizer
-from personal.models import Employee, State, Result
+from analizer.analizer import analize_tweets
+from personal.models import Employee, State, Result, Username
 
 
+global TASK_URL
 
 
 def getLastResults():
@@ -33,40 +35,60 @@ def getLastResults():
 
 @login_required(login_url='login/')
 def home_screen_view(request):
-    
+    context = {}
     if request.method == 'POST':
         form = ScanFrom(request.POST)
         if form.is_valid():
             date = request.POST['date']
             position = request.POST['position']
+            if position =="All":
+                employees = list(Username.objects.all().values())
+            else:
+                employees = list(Username.objects.filter(employee_id__position=position).values())
 
-            analizer.run_anilizer(date,position)
+            
+            task = analize_tweets.delay(employees,date)
+            TASK_URL = task.task_id
+            context['task_id']=task.task_id
+            
+            # date = request.POST['date']
+            # position = request.POST['position']
 
-            return redirect('/')
+            # analizer.run_anilizer(date,position)
+
+            # return redirect('/')
     else:
         form = ScanFrom()
     
     res = getLastResults()
-    context = {'form':form,
-                'all_results': res}  
+    context['form']=form
+    context['all_results']= res  
     return render(request, 'personal/home.html',context)
     
 def grouped_screen_view(request):
+    print(TASK_URL)
+    context = {}
     if request.method == 'POST':
         form = ScanFrom(request.POST)
         if form.is_valid():
             date = request.POST['date']
             position = request.POST['position']
 
-            analizer.run_anilizer(date)
+            if position =="All":
+                employees = list(Username.objects.all().values())
+            else:
+                employees = list(Username.objects.filter(employee_id__position=position).values())
 
-            return redirect('/grouped')
+            
+            task = analize_tweets.delay(employees,date)
+            TASK_URL = task.task_id
+            context['task_id']=task.task_id
     else:
         form = ScanFrom()
     
     res = getLastResults()
-    context = {'form':form,
-                'all_results': res}  
+    context['form']=form
+    context['all_results']= res
     return render(request, 'personal/grouped.html',context)
 
 def pairDateAndValue(dates, values):

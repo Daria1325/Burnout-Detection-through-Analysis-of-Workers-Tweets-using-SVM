@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_celery_results'
+    'django_celery_results',
+    'celery_progress',
 ]
 
 MIDDLEWARE = [
@@ -140,7 +141,7 @@ MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_cdn')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media_cdn')
 
-CELERY_BROKER_URL = 'redis-16506.c299.asia-northeast1-1.gce.cloud.redislabs.com:16506'
+CELERY_BROKER_URL = 'redis://default:nFaVaVvAvtEWL1ZhRYnKPvXSgXtDeJdD@redis-16506.c299.asia-northeast1-1.gce.cloud.redislabs.com:16506'
 
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'

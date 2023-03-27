@@ -40,7 +40,7 @@ def home_screen_view(request):
             date = request.POST['date']
             position = request.POST['position']
 
-            analizer.run_anilizer(date)
+            analizer.run_anilizer(date,position)
 
             return redirect('/')
     else:
@@ -87,7 +87,6 @@ def pairDateAndValue(dates, values):
 def getStatistic(start_date, end_date, group, chart):
     if group == 'Date':
         if chart == 'Line' or chart == 'Column' or chart == 'Stucked':
-           # dates = list(set(Result.objects.filter(scan_date__gte=start_date).filter(scan_date__lte=end_date).order_by('scan_date').values_list('scan_date', flat=True)))
             dates= list(np.unique(np.array(Result.objects.filter(scan_date__gte=start_date).filter(scan_date__lte=end_date).order_by('scan_date').values_list('scan_date', flat=True))))
 
             count_L = list(Result.objects.filter(scan_date__gte=start_date).filter(scan_date__lte=end_date).filter(status='L').order_by('scan_date').values('scan_date').annotate(Count('status')))

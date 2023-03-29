@@ -1,3 +1,4 @@
+{% load static %}
   <!--Scanning button  -->
   <div class="col-md-12 text-center mb-5 mt-5">
     <button id="scan-btn" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#scaningForm">
@@ -31,3 +32,4 @@
         <a class="nav-link" id="statistic_tab" href="/statistic">Statistic</a>
       </li>
     </ul>
+    <script src="{% static 'celery_progress/celery_progress.js' %}"></script>

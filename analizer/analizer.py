@@ -10,10 +10,6 @@ from personal.models import Employee, State, Result
 import time
 
 
-# from celery import states
-# from celery.signals import before_task_publish
-# from django_celery_results.models import TaskResult
-
 def openFiles():
     f = open("analizer\data\\alldata.txt", "r")
     
@@ -100,23 +96,6 @@ def form_new_status(worker):
     change_status(worker,new_status_id)
 
 
-
-
-# @before_task_publish.connect
-# def create_task_result_on_publish(sender=None, headers=None, body=None, **kwargs):
-#     if "task" not in headers:
-#         return
-
-#     TaskResult.objects.store_result(
-#         "application/json",
-#         "utf-8",
-#         headers["id"],
-#         None,
-#         states.PENDING,
-#         task_name=headers["task"],
-#         task_args=headers["argsrepr"],
-#         task_kwargs=headers["kwargsrepr"],
-#     )
 
 @shared_task(bind=True)
 def analize_tweets(self,workers,date):

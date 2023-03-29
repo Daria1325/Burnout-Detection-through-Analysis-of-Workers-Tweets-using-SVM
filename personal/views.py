@@ -49,7 +49,7 @@ def home_screen_view(request):
 
             task = analize_tweets.delay(employees,date)
             context['task_id']=task.task_id
-            redirect('/')
+            return redirect('/')
     else:
         form = ScanFrom()
     res = getLastResults()
@@ -78,6 +78,7 @@ def grouped_screen_view(request):
             
             task = analize_tweets.delay(employees,date)
             context['task_id']=task.task_id
+            return redirect('/grouped')
     else:
         form = ScanFrom()
     
@@ -312,14 +313,19 @@ def getStatistic(start_date, end_date, group, chart):
 
 
 def statistic_screen_view(request, start_date=None, end_date=None,group=None, chart=None):
+    context = {}
     if request.method == 'POST':
         form = ScanFrom(request.POST)
         if form.is_valid():
             date = request.POST['date']
             position = request.POST['position']
+            if position =="All":
+                employees = list(Username.objects.all().values())
+            else:
+                employees = list(Username.objects.filter(employee_id__position=position).values())
 
-            analizer.run_anilizer(date)
-
+            task = analize_tweets.delay(employees,date)
+            context['task_id']=task.task_id
             return redirect('/statistic')
     else:
         form = ScanFrom()

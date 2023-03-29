@@ -11,8 +11,9 @@ from .forms import ScanFrom
 from analizer.analizer import analize_tweets
 from personal.models import Employee, State, Result, Username
 
+from django_celery_results.models import TaskResult
 
-global TASK_URL
+
 
 
 def getLastResults():
@@ -46,27 +47,22 @@ def home_screen_view(request):
             else:
                 employees = list(Username.objects.filter(employee_id__position=position).values())
 
-            
             task = analize_tweets.delay(employees,date)
-            TASK_URL = task.task_id
             context['task_id']=task.task_id
-            
-            # date = request.POST['date']
-            # position = request.POST['position']
-
-            # analizer.run_anilizer(date,position)
-
-            # return redirect('/')
+            redirect('/')
     else:
         form = ScanFrom()
-    
     res = getLastResults()
+    if context == {}:
+        tasks = TaskResult.objects.filter(status = "PROGRESS") | TaskResult.objects.filter(status = "STARTED")
+        if len(tasks)!=0:
+            context['task_id']=tasks[0].task_id
+
     context['form']=form
     context['all_results']= res  
     return render(request, 'personal/home.html',context)
     
 def grouped_screen_view(request):
-    print(TASK_URL)
     context = {}
     if request.method == 'POST':
         form = ScanFrom(request.POST)
@@ -81,11 +77,15 @@ def grouped_screen_view(request):
 
             
             task = analize_tweets.delay(employees,date)
-            TASK_URL = task.task_id
             context['task_id']=task.task_id
     else:
         form = ScanFrom()
     
+    if context == {}:
+        tasks = TaskResult.objects.filter(status = "PROGRESS") | TaskResult.objects.filter(status = "STARTED")
+        if len(tasks)!=0:
+            context['task_id']=tasks[0].task_id
+
     res = getLastResults()
     context['form']=form
     context['all_results']= res

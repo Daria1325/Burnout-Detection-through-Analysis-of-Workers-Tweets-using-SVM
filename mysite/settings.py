@@ -146,6 +146,7 @@ CELERY_BROKER_URL = 'redis://default:nFaVaVvAvtEWL1ZhRYnKPvXSgXtDeJdD@redis-1650
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_BACKEND ='django-db'
+CELERY_TASK_TRACK_STARTED = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

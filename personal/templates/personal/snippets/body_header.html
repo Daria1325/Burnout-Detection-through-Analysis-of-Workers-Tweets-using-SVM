@@ -1,6 +1,6 @@
   <!--Scanning button  -->
   <div class="col-md-12 text-center mb-5 mt-5">
-    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#scaningForm">
+    <button id="scan-btn" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#scaningForm">
       START SCANNING
     </button>
   </div>
@@ -14,6 +14,7 @@
       var progressUrl = "{% url 'celery_progress:task_status' task_id %}";
       CeleryProgressBar.initProgressBar(progressUrl);
     });
+    document.getElementById("scan-btn").classList.add("disabled");
   </script>
   {% endif %}
   {% include 'personal/modal_scaning.html' %}

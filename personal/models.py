@@ -19,7 +19,7 @@ class State(models.Model):
     state_id =models.AutoField(primary_key=True)
     note = models.CharField(max_length=50,null=False,blank=False)
     status =models.CharField(max_length=10,choices=STATUS_OPTIONS)
-    progress =models.CharField(max_length=10,choices=PROGRESS_OPTIONS)
+    progress =models.CharField(max_length=10,choices=PROGRESS_OPTIONS, blank=True)
 
     def __str__(self):
         return self.note

@@ -7,6 +7,7 @@ from personal.models import Employee, Result, State
 
 def get_enployee_info(id):
     employee = Employee.objects.get(pk=id)
+    status = Employee.objects.filter(pk=id).values_list('state_id__status', flat=True)[0]
     last_result = list(Result.objects.filter(employee_id=employee).order_by('-scan_date').values())[0]
     results = list(Result.objects.filter(employee_id=employee).order_by('scan_date').values())
     for result in results:
@@ -14,7 +15,7 @@ def get_enployee_info(id):
 
 
     if last_result:
-        last_result = {'status': last_result['status'],
+        last_result = {'status': status,
                     'count': last_result['count_N']+last_result['count_S']+last_result['count_L'],
                     'percent_N': last_result['percent_N'],
                     'percent_S': last_result['percent_S'],

@@ -45,30 +45,40 @@ def save_results(worker, date, probs, count):
     employee = Employee.objects.get(employee_id=worker['employee_id_id'])
     result = {"percent_N" : probs[0], "percent_S": probs[1], "percent_L" : probs[2],
     "count_N" : count[0], "count_S" : count[1], "count_L" : count[2]}
-    result['status'] = analize_results(result)
+    result['status'], _ = analize_results(result)
+    print(result)
     Result.objects.update_or_create(
     employee_id=employee, scan_date = date,
     defaults=result,
     )
 
+def get_average_count(results):
+    count = 0.
+    for result in results:
+        count+= result['count_N']+result['count_S']+result['count_L']
+    return count/len(results)
 
 def analize_results(results):
     if (results['count_N']+results['count_S']+results['count_L']==0):
-        return "N"
+        return "N",results['count_N']+results['count_S']+results['count_L']
     elif results['percent_N']>0.85:
-        return "L"
+        return "L",results['count_N']+results['count_S']+results['count_L']
     elif (results['percent_S']+ results['percent_L']>30):
-        return "H"
+        return "H",results['count_N']+results['count_S']+results['count_L']
     else:
-        return "M"
+        return "M",results['count_N']+results['count_S']+results['count_L']
 
 
-def find_new_status_id(new_res,prev_res=None):
+def find_new_status_id(new_res, new_count, prev_res=None, avr_count=None):
     if prev_res is None:
-        new_status_id = State.objects.filter(status=new_res).filter(progress__exact='').values_list('state_id', flat=True)[0]
+        new_status_id = State.objects.filter(status=new_res[0]).filter(progress__exact='').values_list('state_id', flat=True)[0]
         return new_status_id
+    if avr_count is not None and avr_count!=0:
+        change = (abs(new_count- avr_count)) * 100 / avr_count
+        if change >70:
+            new_status_id = State.objects.filter(status='M').filter(note = "Big change in number of posted tweets").values_list('state_id', flat=True)[0]
+            return new_status_id
 
-    
     if (new_res=='N'):
         new_status_id = State.objects.filter(status=new_res).filter(progress__exact='').values_list('state_id', flat=True)[0]
     elif (prev_res == new_res):
@@ -86,12 +96,13 @@ def find_new_status_id(new_res,prev_res=None):
 def form_new_status(worker):
     employee = Employee.objects.get(employee_id=worker['employee_id_id'])
     last_results = Result.objects.filter(employee_id=employee).order_by('-scan_date').values()
-    last_result_status = analize_results(last_results[0])
-    if last_results.count() >1:
-        prev_result_status = analize_results(last_results[1])
-        new_status_id=find_new_status_id(last_result_status,prev_result_status)
+    last_result_status, last_count = analize_results(last_results[0])
+    if last_results.count() > 1:
+        prev_result_status,_ = analize_results(last_results[1])
+        avr_count = get_average_count(last_results[1:3])
+        new_status_id=find_new_status_id(last_result_status,last_count, prev_result_status, avr_count)
     else:
-        new_status_id=find_new_status_id(last_result_status)
+        new_status_id=find_new_status_id(last_result_status, last_count)
     
     change_status(worker,new_status_id)
 

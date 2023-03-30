@@ -23,6 +23,8 @@ def fill_states(apps, schema_editor):
 
     State.objects.create(status="N", note = "No data")
 
+    State.objects.create(status="M", note = "Big change in number of posted tweets")
+
 
 def fill_employees(apps, schema_editor):
     Employee = apps.get_model('personal', 'Employee')

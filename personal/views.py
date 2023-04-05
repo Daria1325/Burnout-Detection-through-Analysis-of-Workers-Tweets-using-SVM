@@ -6,6 +6,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import random
 import numpy as np
+import time
 
 from .forms import ScanFrom
 from analizer.analizer import analize_tweets
@@ -49,19 +50,20 @@ def home_screen_view(request):
 
             task = analize_tweets.delay(employees,date)
             context['task_id']=task.task_id
+            time.sleep(2)
             return redirect('/')
     else:
         form = ScanFrom()
     res = getLastResults()
     if context == {}:
-        tasks = TaskResult.objects.filter(status = "PROGRESS") | TaskResult.objects.filter(status = "STARTED")
+        tasks = TaskResult.objects.filter(status = "PROGRESS") | TaskResult.objects.filter(status = "STARTED") | TaskResult.objects.filter(status = "PENDING")
         if len(tasks)!=0:
             context['task_id']=tasks[0].task_id
 
     context['form']=form
     context['all_results']= res  
     return render(request, 'personal/home.html',context)
-    
+@login_required(login_url='/login/')   
 def grouped_screen_view(request):
     context = {}
     if request.method == 'POST':
@@ -78,6 +80,7 @@ def grouped_screen_view(request):
             
             task = analize_tweets.delay(employees,date)
             context['task_id']=task.task_id
+            time.sleep(2)
             return redirect('/grouped')
     else:
         form = ScanFrom()
@@ -106,7 +109,7 @@ def pairDateAndValue(dates, values):
     return result
         
 
-
+@login_required(login_url='/login/')  
 def getStatistic(start_date, end_date, group, chart):
     if group == 'Date':
         if chart == 'Line' or chart == 'Column' or chart == 'Stucked':
@@ -326,6 +329,7 @@ def statistic_screen_view(request, start_date=None, end_date=None,group=None, ch
 
             task = analize_tweets.delay(employees,date)
             context['task_id']=task.task_id
+            time.sleep(2)
             return redirect('/statistic')
     else:
         form = ScanFrom()
@@ -336,7 +340,13 @@ def statistic_screen_view(request, start_date=None, end_date=None,group=None, ch
         res = getStatistic(start_date,end_date,'Date','Line')
     else:
         res = getStatistic(start_date,end_date,group,chart)
-    context = {'form':form,
-                'results': res}  
+
+    if context == {}:
+        tasks = TaskResult.objects.filter(status = "PROGRESS") | TaskResult.objects.filter(status = "STARTED")
+        if len(tasks)!=0:
+            context['task_id']=tasks[0].task_id
+
+    context['form']=form
+    context['results']= res      
     return render(request, 'personal/statistic.html',context)
 

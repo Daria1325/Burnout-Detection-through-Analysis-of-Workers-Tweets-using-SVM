@@ -4,18 +4,74 @@
 
 <div class="container my-5">
     <div class="bg-light p-5 rounded">
-      <div class="mx-auto">
-        <h1 class="fw-normal text-center">Documentation</h1>
-        <h2>How to analize the chart</h2>
-        <p class="fs-5">To begin with, you need to refer to the grouped list. People who are in the high-risk zone must be examined in more detail,
-           as well as people whose condition has worsened. For more detailed research, you need to go to the employee's personal page. 
-           There you can see graphs based on indicators, which will help to ascertain the state of the employee.</p>
-        <h2>What to do with people in risk</h2>
-        <p class="fs-5">If a person is at risk, first you need to talk to the employee's manager and 
-          ask if he has noticed any changes in his work or communication with the employee. 
-          If the changes were in a negative direction, it is necessary to contact the employee himself and inquire about his condition, 
-          indicate that the company provides the services of a psychologist free of charge and offer to take a course.</p>
-    </div>
+      <div class="mx-auto" id="accordion">
+        <h1 class="fw-normal text-center mb-5">Documentation</h1>
+        <div class="card border-0">
+          <div class="card-header" id="headingFour">
+            <h5 class="mb-0">
+              <button class="btn collapsed w-100 text-left shadow-none border-0" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                <h3 class="fw-normal">How to run a scan</h3>
+              </button>
+            </h5>
+          </div>
+          <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+            <div class="card-body">
+              To start a scan, go to the main page and click the <b>Start scanning</b> button.
+               Select the date of the scan (the current date is recommended) and select a group of employees, 
+               if the scan is not performed for all employees. <br>Press the start button.
+                <br>You will see a progress bar that will show the progress of the scan, upon completion
+                 the updated data will be available for use.  </div>
+          </div>
+        </div>
+            <div class="card border-0">
+              <div class="card-header" id="headingOne">
+                <h5 class="mb-0">
+                  <button class="btn collapsed w-100 text-left shadow-none border-0" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <h3 class="fw-normal">How to analize the chart</h3>
+                  </button>
+                </h5>
+              </div>
+          
+              <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body ">
+                  To begin with, you need to refer to the grouped list. People who are in the high-risk zone must be examined in more detail,
+                  as well as people whose condition has worsened. For more detailed research, you need to go to the employee's personal page. 
+                  There you can see graphs based on indicators, which will help to ascertain the state of the employee.        </div>
+              </div>
+            </div>
+            <div class="card border-0">
+              <div class="card-header" id="headingTwo">
+                <h5 class="mb-0">
+                  <button class="btn collapsed w-100 text-left shadow-none border-0" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    <h3 class="fw-normal">How to analyze personal indicators</h3>
+                  </button>
+                </h5>
+              </div>
+              <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                <div class="card-body">
+                  On the employee's personal page, you can see the change in 4 indicators: the number
+                  of tweets written per month, the percentage of normal, stressful and lonely tweets. If there are
+                  any sharp changes in the indicators, this is a reason to pay attention to this employee.        </div>
+              </div>
+            </div>
+            <div class="card border-0">
+              <div class="card-header" id="headingThree">
+                <h5 class="mb-0">
+                  <button class="btn collapsed w-100 text-left shadow-none border-0" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    <h3 class="fw-normal">What to do with people in risk</h3>         </button>
+                </h5>
+              </div>
+              <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                <div class="card-body">
+                  If a person is at risk, first you need to talk to the employee's manager and 
+                  ask if he has noticed any changes in his work or communication with the employee. 
+                  If the changes were in a negative direction, it is necessary to contact the employee himself and inquire about his condition, 
+                  indicate that the company provides the services of a psychologist free of charge and offer to take a course.        </div>
+              </div>
+            </div>
+            
+          </div>
+
     </div>
   </div>
 

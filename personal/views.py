@@ -109,7 +109,7 @@ def pairDateAndValue(dates, values):
     return result
         
 
-@login_required(login_url='/login/')  
+
 def getStatistic(start_date, end_date, group, chart):
     if group == 'Date':
         if chart == 'Line' or chart == 'Column' or chart == 'Stucked':
@@ -314,7 +314,7 @@ def getStatistic(start_date, end_date, group, chart):
 
 
 
-
+@login_required(login_url='/login/')  
 def statistic_screen_view(request, start_date=None, end_date=None,group=None, chart=None):
     context = {}
     if request.method == 'POST':

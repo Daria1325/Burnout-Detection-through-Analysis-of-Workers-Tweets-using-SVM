@@ -28,13 +28,13 @@
 
 
 {% if request.user.is_authenticated %}
-<div class="d-flex flex-wrap justify-content-center p-1 mb-4 border-bottom shadow-sm">
-  <a href="{% url 'home' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none navbar-brand">
+<div class="d-flex flex-wrap justify-content-center p-1 mb-4 border-bottom shadow-sm row">
+  <a href="{% url 'home' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none navbar-brand col-md-6 col-12 justify-content-md-start justify-content-center">
     <img class="logo" src="{% static 'Logo.png' %}" width="40" height="30">
     <span class="fs-4 logo">MindCheck</span>
   </a>
 
-  <ul class="nav text-dark">
+  <ul class="nav text-dark justify-content-md-end col-md-6 col-12 justify-content-center">
     <li class="nav-item"><a href="{% url 'home' %}" class="nav-link" aria-current="page">Home</a></li>
     <li class="nav-item"><a href="{% url 'documentation' %}" class="nav-link">Documentation</a></li>
     <li class="nav-item"><a href="{% url 'logout' %}" class="nav-link">Log out</a></li>

@@ -9,6 +9,27 @@ var now = new Date(), maxDate = now.toISOString().substring(0,10);
 document.getElementById('end_date').setAttribute('max',maxDate);
 document.getElementById('start_date').setAttribute('max',maxDate);
 
+$(document).ready(function() {
+  $('#select_chart').select2({
+    theme: "bootstrap-5",
+    width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
+    placeholder: $( this ).data( 'placeholder' ),
+    closeOnSelect: false,
+    minimumResultsForSearch: Infinity
+  });
+});
+
+$(document).ready(function() {
+  $('#select_group').select2({
+    theme: "bootstrap-5",
+    width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
+    placeholder: $( this ).data( 'placeholder' ),
+    closeOnSelect: false,
+    minimumResultsForSearch: Infinity
+  });
+});
+
+
 $("#select_chart").val(dataForChart['chart']).trigger('change.select2');
 $("#select_group").val(dataForChart['group']).trigger('change.select2');
 

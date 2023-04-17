@@ -38,6 +38,8 @@ class Twitter(object):
             for tweet in tmpTweets:
                 if tweet.created_at.date() < end_date and tweet.created_at.date() > start_date:
                     cleaned = self.clean_tweets(tweet.text)
+                    if username == 'allyson_meghan':
+                        print(tweet.text)
                     if cleaned:
                         tweets.append(cleaned)
 
@@ -47,6 +49,8 @@ class Twitter(object):
                     for tweet in tmpTweets[1:]:
                         if tweet.created_at.date() <= end_date and tweet.created_at.date() > start_date:
                             cleaned = self.clean_tweets(tweet.text)
+                            if username == 'allyson_meghan':
+                                print(tweet.text)
                             if cleaned:
                                 tweets.append(cleaned)
                 else:

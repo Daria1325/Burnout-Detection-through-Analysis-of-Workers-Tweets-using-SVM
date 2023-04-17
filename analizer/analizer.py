@@ -52,15 +52,20 @@ def save_results(worker, date, probs, count):
     )
 
 def get_average_count(results):
-    count = 0.
+    count = 0
+    number = 0
     for result in results:
-        count+= result['count_N']+result['count_S']+result['count_L']
-    return count/len(results)
+        if result['count_N']+result['count_S']+result['count_L'] !=0:
+            count+= result['count_N']+result['count_S']+result['count_L']
+            number+=1
+    if number==0:
+        return 0.
+    return count/number
 
 def analize_results(results):
     if (results['count_N']+results['count_S']+results['count_L']==0):
         return "N",results['count_N']+results['count_S']+results['count_L']
-    elif results['percent_N']>0.85:
+    elif results['percent_N']>0.80:
         return "L",results['count_N']+results['count_S']+results['count_L']
     elif (results['percent_S']+ results['percent_L']>30):
         return "H",results['count_N']+results['count_S']+results['count_L']
@@ -72,9 +77,13 @@ def find_new_status_id(new_res, new_count, prev_res=None, avr_count=None):
     if prev_res is None:
         new_status_id = State.objects.filter(status=new_res[0]).filter(progress__exact='').values_list('state_id', flat=True)[0]
         return new_status_id
+    elif prev_res=='N' and new_res=='N':
+        new_status_id = State.objects.filter(status=new_res).filter(progress__exact='').values_list('state_id', flat=True)[0]
+        return new_status_id
+
     if avr_count is not None and avr_count!=0:
         change = (abs(new_count- avr_count)) * 100 / avr_count
-        if change >70:
+        if change >70 and new_count>15 and avr_count>=15:
             new_status_id = State.objects.filter(status='M').filter(note = "Big change in number of posted tweets").values_list('state_id', flat=True)[0]
             return new_status_id
 
@@ -124,6 +133,8 @@ def analize_tweets(self,workers,date):
             to_predict_vec = vectorizer.transform(to_predict)
             probs = np.round(model.predict_proba(to_predict_vec)[0],decimals=2)
             results.append(probs)
+            if worker['username'] == 'allyson_meghan':
+                print(probs)
 
         average = getAverage(results)
         save_results(worker,date,average[0], average[1])

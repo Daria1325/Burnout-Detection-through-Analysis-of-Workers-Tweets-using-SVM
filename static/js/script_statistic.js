@@ -66,6 +66,17 @@ if (dataForChart['chart']== 'Line' && dataForChart['group']!='Position'){
 }
 if (dataForChart['chart']== 'Line' && dataForChart['group']=='Position'){
   chart = createLineChartPosition(dataForChart);
+  //uncheck all exept first position
+  for (var i = 1; i< dataForChart['positions'].length;i++){
+    changeDiagramLine(dataForChart['positions'][i]+"_Low");
+    changeDiagramLine(dataForChart['positions'][i]+"_High");
+    changeDiagramLine(dataForChart['positions'][i]+"_No Data");
+    changeDiagramLine(dataForChart['positions'][i]+"_Moderate");
+    document.getElementById(dataForChart['positions'][i]+"_Low").checked=false;
+    document.getElementById(dataForChart['positions'][i]+"_High").checked=false;
+    document.getElementById(dataForChart['positions'][i]+"_No Data").checked=false;
+    document.getElementById(dataForChart['positions'][i]+"_Moderate").checked=false;
+  }
 }
 if (dataForChart['chart']== 'Pie' && dataForChart['group']=='Date'){
   chart = createPieChartDate(dataForChart);
@@ -132,7 +143,116 @@ function createLineChartDate(dataForChart){
     return chart;
 }
 
+function changeDiagramLine(id){
+  var index=null;
+    for (var j = 0; j < chart.data.datasets.length;j++){
+      if (chart.data.datasets[j].label===id){
+        index= j;
+        break;
+      }
+    }
+    if (index != null){
+      const visibilityData = chart.isDatasetVisible(index);
+      if (visibilityData === true){
+        chart.hide(index);
+      }
+
+      if (visibilityData === false){
+        chart.show(index);
+      }   
+    }
+}
+
+$(':checkbox').change(function() {
+    const position = this.id;
+    changeDiagramLine(position);
+     
+});
+
 function createLineChartPosition(dataForChart){
+
+  var legendBox = document.getElementById("legendBox");
+
+  for (var i = 0; i< dataForChart['positions'].length;i++){
+
+    var div_position = document.createElement('div');
+    div_position.classList.add("col-sm-5", "col-md-12");
+
+    var btn = document.createElement('button');
+    btn.id = "label_"+ dataForChart['positions'][i];
+    btn.textContent = dataForChart['positions'][i];
+    btn.setAttribute("data-toggle","collapse");
+    btn.setAttribute("data-target",'#collapse'+i);
+    btn.classList.add("btn", "w-100","text-left", "shadow-none", "border-0");
+
+    var check_div = document.createElement('div');
+    check_div.id = 'collapse'+i;
+    check_div.classList.add("collapse", i.toString(), "text-left", "ms-5");
+    check_div.setAttribute("data-parent",'#legendBox');
+
+    var input = document.createElement('input');
+    input.type="checkbox";
+    input.value = "Low";
+    input.checked = true;
+    input.classList.add("form-check-input");
+    input.id = dataForChart['positions'][i]+"_Low";
+    check_div.appendChild(input);
+
+    var label = document.createElement('label')
+    label.htmlFor = dataForChart['positions'][i]+"_Low";
+    label.appendChild(document.createTextNode('Low'));
+    label.classList.add("m-0");
+    check_div.appendChild(label);
+    check_div.appendChild(document.createElement('br'));
+
+    var input = document.createElement('input');
+    input.type="checkbox";
+    input.value = "Moderate";
+    input.id = dataForChart['positions'][i]+"_Moderate";
+    input.classList.add("form-check-input");
+    input.checked = true;
+    check_div.appendChild(input);
+    var label = document.createElement('label')
+    label.htmlFor = dataForChart['positions'][i]+"_Moderate";
+    label.appendChild(document.createTextNode('Moderate'));
+    label.classList.add("m-0");
+    check_div.appendChild(label);
+    check_div.appendChild(document.createElement('br'));
+
+    var input = document.createElement('input');
+    input.type="checkbox";
+    input.value = "High";
+    input.id=dataForChart['positions'][i]+"_High";
+    input.classList.add("form-check-input");
+    input.checked = true;
+    check_div.appendChild(input);
+    
+    var label = document.createElement('label')
+    label.htmlFor = dataForChart['positions'][i]+"_High";
+    label.appendChild(document.createTextNode('High'));
+    label.classList.add("m-0");
+    check_div.appendChild(label);
+    check_div.appendChild(document.createElement('br'));
+
+    var input = document.createElement('input');
+    input.type="checkbox";
+    input.value = "No data";
+    input.id=dataForChart['positions'][i]+"_No Data";
+    input.classList.add("form-check-input");
+    input.checked = true;
+    check_div.appendChild(input);
+    var label = document.createElement('label')
+    label.htmlFor = dataForChart['positions'][i]+"_No Data";
+    label.appendChild(document.createTextNode('No data'));
+    label.classList.add("m-0");
+    check_div.appendChild(label);
+    check_div.appendChild(document.createElement('br'));
+
+    div_position.appendChild(btn);
+    div_position.appendChild(check_div);  
+    legendBox.appendChild(div_position);  
+  }
+
   const ctx = document.getElementById('myChart');
   var labels = dataForChart['labels'];
 
@@ -173,6 +293,7 @@ function createLineChartPosition(dataForChart){
       tension: 0.5
     })
   }
+
   
   const data = {
     labels: labels,
@@ -186,8 +307,7 @@ function createLineChartPosition(dataForChart){
         maintainAspectRatio: false,
         plugins:{
           legend: {
-            display: true,
-            position: 'right'
+            display: false
           }
         },
           scales: {

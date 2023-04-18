@@ -5,13 +5,17 @@ from datetime import datetime
 from personal.models import Employee, Result, State
 # Create your views here.
 
-def get_enployee_info(id):
+def get_employee_info(id):
     employee = Employee.objects.get(pk=id)
     status = Employee.objects.filter(pk=id).values_list('state_id__status', flat=True)[0]
-    last_result = list(Result.objects.filter(employee_id=employee).order_by('-scan_date').values())[0]
-    results = list(Result.objects.filter(employee_id=employee).order_by('scan_date').values())
-    for result in results:
-        result['scan_date'] = result['scan_date'].strftime("%Y/%m/%d")
+    if status:
+        last_result = list(Result.objects.filter(employee_id=employee).order_by('-scan_date').values())[0]
+        results = list(Result.objects.filter(employee_id=employee).order_by('scan_date').values())
+        for result in results:
+            result['scan_date'] = result['scan_date'].strftime("%Y/%m/%d")
+    else:
+        last_result=None
+        results=[]
 
 
     if last_result:
@@ -38,6 +42,6 @@ def get_enployee_info(id):
 
 @login_required(login_url='login/')
 def profile_screen_view(request,id):
-    context = get_enployee_info(id) 
+    context = get_employee_info(id) 
 
     return render(request, 'profile/profile.html',context)

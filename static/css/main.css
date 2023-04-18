@@ -25,3 +25,7 @@
     height: 30vh; 
     width: 80vw;
 }
+.chart_md{
+    position: relative;
+    height: 45vh; 
+}

@@ -34,7 +34,7 @@
                 </div>
             </div>
         <div class ="row align-items-stretch mb-4">
-            <div id="chartContainer" class="ms-auto me-auto  shadow p-2 bg-white rounded text-center chart_lg">
+            <div id="chartContainer" class="ms-auto me-auto col-12  shadow p-2 bg-white rounded text-center chart_lg">
                 {% if 'Position/Pie' in request.path or  'Time/Pie' in request.path %}
                 <div class="row justify-content-center mb-3">
                     <div class="col-5 chart_sm"><canvas id="myChart"></canvas></div>
@@ -46,8 +46,16 @@
                </div>
                 
                 {% else %}
-                <canvas id="myChart"></canvas>
+                    {% if 'Position/Line' in request.path %}
+                        <div class="row mb-3 chart_md">
+                            <div class="col-md-3 col-sm-10 pe-0" ><div id="legendBox" class="legendBox" class="row"></div ></div>
+                            <div class="col-md-8 col-sm-10 p-0 me-auto ms-auto"><canvas id="myChart"></canvas></div>
+                        </div>
+                    {% else %}
+                        <canvas id="myChart"></canvas>
+                    {% endif %}
                 {% endif %}
+                
             </div>
         </div>
     </div>

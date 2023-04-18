@@ -2,10 +2,14 @@
 var data_string = document.getElementsByClassName('container')[0].getAttribute('data-js-vars').replace(/'/g, '"');
 var string_split = data_string.slice(1, data_string.length-1).split('},').map(s=> s+'}');
 string_split[string_split.length-1] = string_split[string_split.length-1].slice(0,string_split[string_split.length-1].length-1);
+
 var results = [];
-for (let i = 0; i< string_split.length; i++){
-    results.push(JSON.parse(string_split[i]) || '{}');
+if (string_split[0]!="" && string_split.length!=1){
+    for (let i = 0; i< string_split.length; i++){
+        results.push(JSON.parse(string_split[i]) || '{}');
+    }
 }
+
 
 // set multiselect property select
 $( '#multiple-select-field' ).select2( {
@@ -48,16 +52,15 @@ $('#multiple-select-field').on('change', function (e) {
 
 
 //Ititial variables an fields
-var props = ["N"];
+var props = ["N", "S", "L"];
 var filtered_results = [];
 
 document.getElementById('end_date').value = moment().format('YYYY-MM-DD');
 document.getElementById('start_date').value = moment().subtract(6, 'months').format('YYYY-MM-DD');
 
 filtered_results = filter_results_by_date("","", results);
-
 var chart = createChart(results, props)
-$('#multiple-select-field').val('N');
+$('#multiple-select-field').val(['N','S', 'L']);
 $('#multiple-select-field').trigger('change');
 
 

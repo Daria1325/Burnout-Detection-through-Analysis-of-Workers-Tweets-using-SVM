@@ -65,9 +65,9 @@ def get_average_count(results):
 def analize_results(results):
     if (results['count_N']+results['count_S']+results['count_L']==0):
         return "N",results['count_N']+results['count_S']+results['count_L']
-    elif results['percent_N']>0.80:
+    elif results['percent_N']>0.75:
         return "L",results['count_N']+results['count_S']+results['count_L']
-    elif (results['percent_S']+ results['percent_L']>30):
+    elif (results['percent_S'] + results['percent_L']>0.40):
         return "H",results['count_N']+results['count_S']+results['count_L']
     else:
         return "M",results['count_N']+results['count_S']+results['count_L']
@@ -83,7 +83,7 @@ def find_new_status_id(new_res, new_count, prev_res=None, avr_count=None):
 
     if avr_count is not None and avr_count!=0:
         change = (abs(new_count- avr_count)) * 100 / avr_count
-        if change >70 and new_count>15 and avr_count>=15:
+        if change >70 and new_count>15 and avr_count>=15 and new_res !='H':
             new_status_id = State.objects.filter(status='M').filter(note = "Big change in number of posted tweets").values_list('state_id', flat=True)[0]
             return new_status_id
 
@@ -133,8 +133,7 @@ def analize_tweets(self,workers,date):
             to_predict_vec = vectorizer.transform(to_predict)
             probs = np.round(model.predict_proba(to_predict_vec)[0],decimals=2)
             results.append(probs)
-            if worker['username'] == 'allyson_meghan':
-                print(probs)
+            print(probs)
 
         average = getAverage(results)
         save_results(worker,date,average[0], average[1])

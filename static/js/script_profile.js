@@ -120,17 +120,20 @@ function createChart(results, properties){
     var data_normal = [];
     var data_lonely = [];
     var data_stressed = [];
+    var data_burn_out = [];
     var data_count = [];
     for (let i = 0; i < results.length; i++){
         labels.push(results[i].scan_date);
         data_normal.push(results[i].percent_N);
         data_lonely.push(results[i].percent_L);
         data_stressed.push(results[i].percent_S);
+        data_burn_out.push(results[i].percent_S+results[i].percent_L);
         const sum_count = results[i].count_N + results[i].count_L +results[i].count_S;
         data_count.push(sum_count);
     }
 
     var datasets = [];
+    
     for (let i = 0; i < properties.length; i++){
         if (properties[i]=="N"){
             datasets.push({
@@ -169,6 +172,16 @@ function createChart(results, properties){
               })
         }
 
+    }
+    if (properties.includes('L') && properties.includes('S')){
+        datasets.push({
+            label: 'Burn out',
+            data: data_burn_out,
+            fill: true,
+            borderColor: '#FFA550',
+            borderDash: [10,5],
+            tension: 0.5
+          })
     }
 
     

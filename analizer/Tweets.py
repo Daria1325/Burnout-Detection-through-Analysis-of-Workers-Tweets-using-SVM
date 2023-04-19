@@ -38,8 +38,7 @@ class Twitter(object):
             for tweet in tmpTweets:
                 if tweet.created_at.date() < end_date and tweet.created_at.date() > start_date:
                     cleaned = self.clean_tweets(tweet.text)
-                    if username == 'allyson_meghan':
-                        print(tweet.text)
+                    print(tweet.text)
                     if cleaned:
                         tweets.append(cleaned)
 
@@ -49,8 +48,8 @@ class Twitter(object):
                     for tweet in tmpTweets[1:]:
                         if tweet.created_at.date() <= end_date and tweet.created_at.date() > start_date:
                             cleaned = self.clean_tweets(tweet.text)
-                            if username == 'allyson_meghan':
-                                print(tweet.text)
+                            print(tweet.text)
+                            print("clean\n",cleaned)
                             if cleaned:
                                 tweets.append(cleaned)
                 else:
@@ -60,6 +59,8 @@ class Twitter(object):
     def clean_tweets(self,text):
         text = text.lower().strip()
         text = re.sub('@[^\s]+','',text)
+        text = re.sub('(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])','',text)
+        text = re.sub('[^\x00-\x7F]+','',text)
         text =  re.sub('[^a-zA-Z]', ' ', text)
         text = re.sub(' +', ' ', text)
         clean_text=""

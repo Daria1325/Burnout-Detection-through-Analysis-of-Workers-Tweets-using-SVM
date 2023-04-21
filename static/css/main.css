@@ -17,8 +17,10 @@
 
 .chart_lg{
     position: relative;
-    height: 46vh; 
-    width: 80vw;
+    min-height: 46vh; 
+    /* width: 80vw; */
+    width: 100vw;
+    height: fit-content;
 }
 .chart_sm{
     position: relative;
@@ -27,5 +29,6 @@
 }
 .chart_md{
     position: relative;
-    height: 45vh; 
+    min-height: 45vh; 
+    height: auto;
 }

@@ -12,13 +12,13 @@ if (string_split[0]!="" && string_split.length!=1){
 
 
 // set multiselect property select
-$( '#multiple-select-field' ).select2( {
-    theme: "bootstrap-5",
-    width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
-    placeholder: $( this ).data( 'placeholder' ),
-    closeOnSelect: false
-});
-$(".select2-search, .select2-focusser").remove();
+// $( '#multiple-select-field' ).select2( {
+//     theme: "bootstrap-5",
+//     width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
+//     placeholder: $( this ).data( 'placeholder' ),
+//     closeOnSelect: false
+// });
+// $(".select2-search, .select2-focusser").remove();
 
 function getProperties(data){
     var props = [];
@@ -39,20 +39,20 @@ function setTags($select){
     }
 }
 
-$('#multiple-select-field').on('change', function (e) {
-    const $select = $(this);
-    var data = $select.select2('data');
-    props = getProperties(data);
-    setTags($select);
-    chart.destroy();
-    chart = createChart(filtered_results,props);
-  });
+// $('#multiple-select-field').on('change', function (e) {
+//     const $select = $(this);
+//     var data = $select.select2('data');
+//     props = getProperties(data);
+//     setTags($select);
+//     chart.destroy();
+//     chart = createChart(filtered_results,props);
+//   });
 
 
 
 
 //Ititial variables an fields
-var props = ["N", "S", "L"];
+var props = ["N", "S", "L", "C"];
 var filtered_results = [];
 
 document.getElementById('end_date').value = moment().format('YYYY-MM-DD');
@@ -60,8 +60,8 @@ document.getElementById('start_date').value = moment().subtract(6, 'months').for
 
 filtered_results = filter_results_by_date("","", results);
 var chart = createChart(results, props)
-$('#multiple-select-field').val(['N','S', 'L']);
-$('#multiple-select-field').trigger('change');
+// $('#multiple-select-field').val(['N','S', 'L']);
+// $('#multiple-select-field').trigger('change');
 
 
 // Date fileds
@@ -132,57 +132,95 @@ function createChart(results, properties){
         data_count.push(sum_count);
     }
 
-    var datasets = [];
-    
-    for (let i = 0; i < properties.length; i++){
-        if (properties[i]=="N"){
-            datasets.push({
-                label: 'Normal',
-                data: data_normal,
-                fill: false,
-                borderColor: '#25BE4B',
-                tension: 0.5
-              })
-        }
-        if (properties[i]=="L"){
-            datasets.push({
-                label: 'Lonely',
-                data: data_lonely,
-                fill: false,
-                borderColor: '#2585BE',
-                tension: 0.5
-              })
-        }
-        if (properties[i]=="S"){
-            datasets.push({
-                label: 'Stressed',
-                data: data_stressed,
-                fill: false,
-                borderColor: '#BE253A',
-                tension: 0.5
-              })
-        }
-        if (properties[i]=="C"){
-            datasets.push({
-                label: 'Count',
-                data: data_count,
-                fill: false,
-                borderColor: '#282E30',
-                tension: 0.5
-              })
-        }
-
-    }
-    if (properties.includes('L') && properties.includes('S')){
-        datasets.push({
+    var datasets = [
+        {
+            label: 'Normal',
+            data: data_normal,
+            fill: false,
+            borderColor: '#25BE4B',
+            tension: 0.5
+          },
+          {
+            label: 'Lonely',
+            data: data_lonely,
+            fill: false,
+            borderColor: '#2585BE',
+            tension: 0.5
+          },
+          {
+            label: 'Stressed',
+            data: data_stressed,
+            fill: false,
+            borderColor: '#BE253A',
+            tension: 0.5
+          },
+          {
+            label: 'Count',
+            data: data_count,
+            fill: false,
+            borderColor: '#282E30',
+            hidden: true,
+            tension: 0.5
+          },
+          {
             label: 'Burn out',
             data: data_burn_out,
             fill: true,
             borderColor: '#FFA550',
             borderDash: [10,5],
             tension: 0.5
-          })
-    }
+          }
+    ];
+    
+    // for (let i = 0; i < properties.length; i++){
+    //     if (properties[i]=="N"){
+    //         datasets.push({
+    //             label: 'Normal',
+    //             data: data_normal,
+    //             fill: false,
+    //             borderColor: '#25BE4B',
+    //             tension: 0.5
+    //           })
+    //     }
+    //     if (properties[i]=="L"){
+    //         datasets.push({
+    //             label: 'Lonely',
+    //             data: data_lonely,
+    //             fill: false,
+    //             borderColor: '#2585BE',
+    //             tension: 0.5
+    //           })
+    //     }
+    //     if (properties[i]=="S"){
+    //         datasets.push({
+    //             label: 'Stressed',
+    //             data: data_stressed,
+    //             fill: false,
+    //             borderColor: '#BE253A',
+    //             tension: 0.5
+    //           })
+    //     }
+    //     if (properties[i]=="C"){
+    //         datasets.push({
+    //             label: 'Count',
+    //             data: data_count,
+    //             fill: false,
+    //             borderColor: '#282E30',
+    //             tension: 0.5
+    //           })
+    //     }
+
+    // }
+    // if (properties.includes('L') && properties.includes('S')){
+    //     datasets.push({
+    //         label: 'Burn out',
+    //         data: data_burn_out,
+    //         fill: true,
+    //         borderColor: '#FFA550',
+    //         borderDash: [10,5],
+    //         tension: 0.5
+    //       })
+    // }
 
     
     

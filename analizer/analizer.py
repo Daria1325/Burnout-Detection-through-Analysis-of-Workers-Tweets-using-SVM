@@ -65,9 +65,9 @@ def get_average_count(results):
 def analize_results(results):
     if (results['count_N']+results['count_S']+results['count_L']==0):
         return "N",results['count_N']+results['count_S']+results['count_L']
-    elif results['percent_N']>0.75:
+    elif results['percent_N']>=0.75:
         return "L",results['count_N']+results['count_S']+results['count_L']
-    elif (results['percent_S'] + results['percent_L']>0.40):
+    elif (results['percent_S'] + results['percent_L']>=0.35):
         return "H",results['count_N']+results['count_S']+results['count_L']
     else:
         return "M",results['count_N']+results['count_S']+results['count_L']

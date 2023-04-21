@@ -48,7 +48,7 @@
                 {% else %}
                     {% if 'Position/Line' in request.path %}
                         <div class="row mb-3 chart_md">
-                            <div class="col-md-3 col-sm-10 pe-0" ><div id="legendBox" class="legendBox" class="row"></div ></div>
+                            <div class="col-md-3 col-sm-12 pe-0" ><div id="legendBox" class="legendBox row p-0 me-auto"></div ></div>
                             <div class="col-md-8 col-sm-10 p-0 me-auto ms-auto"><canvas id="myChart"></canvas></div>
                         </div>
                     {% else %}
@@ -66,6 +66,7 @@
 <!-- <script src="https://momentjs.com/downloads/moment.min.js"></script>   -->
 <script src="{% static 'js/script_statistic.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 
 {% endblock content %}

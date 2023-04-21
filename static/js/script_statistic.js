@@ -68,10 +68,6 @@ if (dataForChart['chart']== 'Line' && dataForChart['group']=='Position'){
   chart = createLineChartPosition(dataForChart);
   //uncheck all exept first position
   for (var i = 1; i< dataForChart['positions'].length;i++){
-    changeDiagramLine(dataForChart['positions'][i]+"_Low");
-    changeDiagramLine(dataForChart['positions'][i]+"_High");
-    changeDiagramLine(dataForChart['positions'][i]+"_No Data");
-    changeDiagramLine(dataForChart['positions'][i]+"_Moderate");
     document.getElementById(dataForChart['positions'][i]+"_Low").checked=false;
     document.getElementById(dataForChart['positions'][i]+"_High").checked=false;
     document.getElementById(dataForChart['positions'][i]+"_No Data").checked=false;
@@ -122,10 +118,24 @@ function createLineChartDate(dataForChart){
       labels: labels,
       datasets: datasets
     };
-    
-    
-
-    const config = {
+    var config
+    if (dataForChart['group']=='Time'){
+      config = {
+        type: 'line',
+        data: data,
+        
+        options: {
+          maintainAspectRatio: false,         
+          scales: {
+                y: {
+                    suggestedMin: 0
+                }
+            },
+          plugins: [ChartDataLabels]
+        }
+    };
+    }else{
+      config = {
         type: 'line',
         data: data,
         
@@ -138,6 +148,10 @@ function createLineChartDate(dataForChart){
             }
         }
     };
+    }
+
+
+    
     
     chart = new Chart(ctx, config);
     return chart;
@@ -176,14 +190,14 @@ function createLineChartPosition(dataForChart){
   for (var i = 0; i< dataForChart['positions'].length;i++){
 
     var div_position = document.createElement('div');
-    div_position.classList.add("col-sm-5", "col-md-12");
+    div_position.classList.add("col-sm-3", "col-md-12", "p-0");
 
     var btn = document.createElement('button');
     btn.id = "label_"+ dataForChart['positions'][i];
     btn.textContent = dataForChart['positions'][i];
     btn.setAttribute("data-toggle","collapse");
     btn.setAttribute("data-target",'#collapse'+i);
-    btn.classList.add("btn", "w-100","text-left", "shadow-none", "border-0");
+    btn.classList.add("btn", "w-100","text-md-left", "text-sm-center", "shadow-none", "border-0");
 
     var check_div = document.createElement('div');
     check_div.id = 'collapse'+i;
@@ -243,7 +257,7 @@ function createLineChartPosition(dataForChart){
     check_div.appendChild(input);
     var label = document.createElement('label')
     label.htmlFor = dataForChart['positions'][i]+"_No Data";
-    label.appendChild(document.createTextNode('No data'));
+    label.appendChild(document.createTextNode('N/D'));
     label.classList.add("m-0");
     check_div.appendChild(label);
     check_div.appendChild(document.createElement('br'));
@@ -256,44 +270,80 @@ function createLineChartPosition(dataForChart){
   const ctx = document.getElementById('myChart');
   var labels = dataForChart['labels'];
 
-  var dataset = []
-  for (var i = 0; i< dataForChart['positions'].length;i++){
+  var dataset = [{
+    label: dataForChart['positions'][0]+'_Low',
+    data: dataForChart['L'][0],
+    fill: false,
+    borderColor: '#25BE4B',
+    tension: 0.5
+  }]
+  for (var i = 1; i< dataForChart['positions'].length;i++){
     dataset.push({
       label: dataForChart['positions'][i]+'_Low',
       data: dataForChart['L'][i],
       fill: false,
       borderColor: '#25BE4B',
+      hidden: true,
       tension: 0.5
     })
   }
-  for (var i = 0; i< dataForChart['positions'].length;i++){
+
+  for (var i = 1; i< dataForChart['positions'].length;i++){
     dataset.push({
       label: dataForChart['positions'][i]+'_Moderate',
       data: dataForChart['M'][i],
       fill: false,
+      hidden: true,
       borderColor: '#FFA550',
       tension: 0.5
     })
   }
-  for (var i = 0; i< dataForChart['positions'].length;i++){
+
+  dataset.push({
+    label: dataForChart['positions'][0]+'_Moderate',
+    data: dataForChart['M'][0],
+    fill: false,
+    borderColor: '#FFA550',
+    tension: 0.5
+  })
+
+  for (var i = 1; i< dataForChart['positions'].length;i++){
     dataset.push({
       label: dataForChart['positions'][i]+'_High',
       data: dataForChart['H'][i],
       fill: false,
+      hidden: true,
       borderColor: '#BE253A',
       tension: 0.5
     })
   }
-  for (var i = 0; i< dataForChart['positions'].length;i++){
+
+  dataset.push({
+    label: dataForChart['positions'][0]+'_High',
+    data: dataForChart['H'][0],
+    fill: false,
+    borderColor: '#BE253A',
+    tension: 0.5
+  })
+
+  for (var i = 1; i< dataForChart['positions'].length;i++){
     dataset.push({
       label: dataForChart['positions'][i]+'_No Data',
       data: dataForChart['N'][i],
       fill: false,
+      hidden: true,
       borderColor: '#282E30',
       tension: 0.5
     })
   }
 
+  dataset.push({
+    label: dataForChart['positions'][0]+'_No Data',
+    data: dataForChart['N'][0],
+    fill: false,
+    borderColor: '#282E30',
+    tension: 0.5
+  })
   
   const data = {
     labels: labels,
@@ -347,8 +397,12 @@ function createPieChartDate(dataForChart){
           legend: {
               display: true,
               position: 'right'
+          },
+          tooltip:{
+            enabled: false
           }
       },
+      plugins: dataForChart['labels'],
       maintainAspectRatio: false,
       
   }

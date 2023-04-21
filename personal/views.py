@@ -247,18 +247,23 @@ def getStatistic(start_date, end_date, group, chart):
             count_H = [0]* len(time)
             count_M = [0]* len(time)
             count_N = [0]* len(time)
+            all_states_count =[0,0,0,0]
             today = dt.today()
             for result in results:
                 difference_in_years = relativedelta(today, result['employee_id__join_date']).years
                 index = 0
                 if difference_in_years <1:
                     index=0
+                    all_states_count[0]+=1
                 elif difference_in_years <=2:
                     index = 1
+                    all_states_count[1]+=1
                 elif difference_in_years <=5:
                     index  = 2
+                    all_states_count[2]+=1
                 else:
                     index = 3
+                    all_states_count[3]+=1
 
                 if result['status'] == 'L':
                     count_L[index] +=1
@@ -269,6 +274,12 @@ def getStatistic(start_date, end_date, group, chart):
                 else:
                     count_N[index]+=1
             
+            for i, state_count in enumerate(all_states_count):
+                count_L[i]= count_L[i]*100.0/ state_count
+                count_H[i]= count_H[i]*100.0/ state_count
+                count_M[i]= count_M[i]*100.0/ state_count
+                count_N[i]= count_N[i]*100.0/ state_count
+
             if chart =='Pie':
                 colors = ["#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)]) for i in range(len(time))]
                 data = {"chart1":{

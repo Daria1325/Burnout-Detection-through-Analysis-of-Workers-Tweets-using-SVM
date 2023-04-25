@@ -274,11 +274,11 @@ def getStatistic(start_date, end_date, group, chart):
                 else:
                     count_N[index]+=1
             
-            for i, state_count in enumerate(all_states_count):
-                count_L[i]= count_L[i]*100.0/ state_count
-                count_H[i]= count_H[i]*100.0/ state_count
-                count_M[i]= count_M[i]*100.0/ state_count
-                count_N[i]= count_N[i]*100.0/ state_count
+            # for i, state_count in enumerate(all_states_count):
+            #     count_L[i]= count_L[i]*100.0/ state_count
+            #     count_H[i]= count_H[i]*100.0/ state_count
+            #     count_M[i]= count_M[i]*100.0/ state_count
+            #     count_N[i]= count_N[i]*100.0/ state_count
 
             if chart =='Pie':
                 colors = ["#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)]) for i in range(len(time))]
@@ -307,7 +307,8 @@ def getStatistic(start_date, end_date, group, chart):
                     'end_date': end_date,
                     'chart': chart,
                     'group': group,
-                    'chartData':data
+                    'chartData':data,
+                    'generalCount':all_states_count
                 }
             else:       
                 return {

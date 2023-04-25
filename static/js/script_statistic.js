@@ -386,27 +386,23 @@ function createPieChartDate(dataForChart){
   };
   
   const config = {
-    type: 'pie',
-    data: data,
-    options: {
-      plugins: {
-          title:{
-            display: true,
-           text:  'The results of all employees in this time period',
-          },
-          legend: {
+      type: 'pie',
+      data: data,
+      options: {
+        plugins: {
+            title:{
               display: true,
-              position: 'right'
-          },
-          tooltip:{
-            enabled: false
-          }
-      },
-      plugins: dataForChart['labels'],
-      maintainAspectRatio: false,
-      
-  }
-  };
+             text:  'The results of all employees in this time period',
+            },
+            legend: {
+                display: true,
+                position: 'right'
+            }
+        },
+        maintainAspectRatio: false,
+        
+      }
+    };
   
   chart = new Chart(ctx, config);
   return chart;
@@ -424,6 +420,7 @@ function createPieChartPosition(dataForChart){
   
   var count = 1;
   for (const item in dataForCharts){
+    var config;
     var data = {
       labels: dataForCharts[item]['labels'],
       datasets: [{
@@ -443,25 +440,65 @@ function createPieChartPosition(dataForChart){
     }else{
       title = "No Data";
     }
-    
-    var config = {
-      type: 'pie',
-      data: data,
-      options: {
-        plugins: {
-            title:{
-              display: true,
-             text:  title
-            },
-            legend: {
+
+    if (dataForChart['group']=='Time'){
+      config = {
+        type: 'pie',
+        data: data,
+        options: {
+          plugins: {
+              title:{
                 display: true,
-                position: 'right'
-            }
+               text:  title,
+              },
+              legend: {
+                  display: true,
+                  position: 'right'
+              },
+              tooltip:{
+                enabled: false
+              },
+              datalabels: {
+                color: 'white',
+                font: {
+                  weight: 'bold'
+                },
+                formatter: (value, ctx)=>{
+                  if (value ===0){
+                    return '';
+                  }
+                  return value + '\n('+ (value*100.0/dataForChart['generalCount'][ctx.dataIndex]).toFixed(1)+'%)';                  
+                }
+              }
+          },
+          maintainAspectRatio: false,
+          
         },
-        maintainAspectRatio: false,
-        
+      plugins: [ChartDataLabels],
+      };
+  
+    }else{
+      config = {
+        type: 'pie',
+        data: data,
+        options: {
+          plugins: {
+              title:{
+                display: true,
+               text:  title
+              },
+              legend: {
+                  display: true,
+                  position: 'right'
+              }
+          },
+          maintainAspectRatio: false,
+          
+      }
+      };
     }
-    };
+    
+    
     if (count==1){
       new Chart(ctx1, config);
     }

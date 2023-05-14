@@ -146,23 +146,8 @@ def analize_tweets(self,workers,date):
         progress_recorder.set_progress(i,len(workers))
     return ''  
 
-def clean_text(text):
-        text = text.lower().strip()
-        text = re.sub('@[^\s]+','',text)
-        text = re.sub('(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])','',text)
-        text = re.sub('[^\x00-\x7F]+','',text)
-        text =  re.sub('[^a-zA-Z]', ' ', text)
-        text = re.sub(' +', ' ', text)
-        clean_text=""
-        for x in text.split():
-            if x not in set(stopwords.words('english')):
-                clean_text=" ".join([clean_text, x])
-        return clean_text
-
 def analize_text(text):
-    text = clean_text(text)
-    doc = nlp(text)
-    text=" ".join([token.lemma_ for token in doc])
+    text = tw.clean_text(text)
     
     textData,model=openFiles()
     vectorizer = TfidfVectorizer(sublinear_tf=True,norm='l2')

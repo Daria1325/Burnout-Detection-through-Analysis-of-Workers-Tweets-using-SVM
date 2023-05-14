@@ -35,15 +35,11 @@ class Twitter(object):
         start_date = end_date + relativedelta(months=-1)
         number_of_tweets=200
         tweets = []
-
-        #2022-07-31
         for i,tweet in enumerate(sntwitter.TwitterSearchScraper(f'from:{username} since:{start_date} until:{end_date}').get_items()):
             if i>number_of_tweets:
                 break
             cleaned = self.clean_tweets(tweet.rawContent)
             if cleaned:
-                doc = nlp(cleaned)
-                cleaned=" ".join([token.lemma_ for token in doc])
                 tweets.append(cleaned)
         return tweets
         

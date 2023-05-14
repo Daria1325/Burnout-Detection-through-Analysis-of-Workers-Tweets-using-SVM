@@ -32,3 +32,16 @@
     min-height: 45vh; 
     height: auto;
 }
+
+.my_circle {
+    width: 100%;
+    transform: rotate(135deg);
+  }
+.circle-percentage {
+    position: relative;
+    color: #444;
+    top: -3.9em;
+    left: 0.15em;
+    right: 0;
+    font-size: 1.5em;
+  }

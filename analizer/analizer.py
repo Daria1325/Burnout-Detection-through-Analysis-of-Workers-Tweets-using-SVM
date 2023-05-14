@@ -7,7 +7,10 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from celery import shared_task
 from celery_progress.backend import ProgressRecorder
 from personal.models import Employee, State, Result
-import time
+import re
+from nltk.corpus import stopwords
+import spacy
+nlp = spacy.load('en_core_web_sm', disable=['parser', 'ner']) 
 
 
 def openFiles():
@@ -124,7 +127,8 @@ def analize_tweets(self,workers,date):
     twitter = tw.Twitter()
     date = datetime.strptime(str(date), "%Y-%m-%d").date()
     for worker in workers:
-        tweets = twitter.get_tweets(worker['username'],date)
+       # tweets = twitter.get_tweets(worker['username'],date)
+        tweets = twitter.get_tweets_snc(worker['username'],date)
         results = []
         for tweet in tweets:
             to_predict = [tweet]
@@ -141,3 +145,28 @@ def analize_tweets(self,workers,date):
         i+=1
         progress_recorder.set_progress(i,len(workers))
     return ''  
+
+def clean_text(text):
+        text = text.lower().strip()
+        text = re.sub('@[^\s]+','',text)
+        text = re.sub('(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])','',text)
+        text = re.sub('[^\x00-\x7F]+','',text)
+        text =  re.sub('[^a-zA-Z]', ' ', text)
+        text = re.sub(' +', ' ', text)
+        clean_text=""
+        for x in text.split():
+            if x not in set(stopwords.words('english')):
+                clean_text=" ".join([clean_text, x])
+        return clean_text
+
+def analize_text(text):
+    text = clean_text(text)
+    doc = nlp(text)
+    text=" ".join([token.lemma_ for token in doc])
+    
+    textData,model=openFiles()
+    vectorizer = TfidfVectorizer(sublinear_tf=True,norm='l2')
+    vectorizer.fit_transform(textData).toarray()
+    to_predict_vec = vectorizer.transform([text])
+    probs = np.round(model.predict_proba(to_predict_vec)[0],decimals=2)
+    return probs

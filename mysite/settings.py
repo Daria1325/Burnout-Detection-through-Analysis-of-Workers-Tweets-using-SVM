@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'documentation',
     'analizer',
     'employee',
+    'playground',
 
     # Django apps
     'django.contrib.admin',

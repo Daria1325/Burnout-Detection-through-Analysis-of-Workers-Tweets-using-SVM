@@ -37,6 +37,10 @@ from employee.views import(
     profile_screen_view,
 )
 
+from playground.views import(
+    playground_view,
+)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -49,6 +53,7 @@ urlpatterns = [
     path('documentation/', documentation_view,name = "documentation"),
     path('employee/<int:id>/', profile_screen_view,name = "profile"),
     path(r'^celery-progress/', include('celery_progress.urls')),
+    path('playground/', playground_view,name = "playground"),
 ]
 
 

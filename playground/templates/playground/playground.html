@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container mb-5" data-js-vars="{{ results }}">
+    <div class="shadow col-md-12 bg-light-subtle">
+        <div class="row text-center mb-0">
+            <div class="col-4 mt-1">Normal</div>
+            <div class="col-4 mt-1">Stress</div>
+            <div class="col-4 mt-1">Lonely</div>
+        </div>
+        <div class="row">
+            {% for res in results %}
+            <div class="col-4">
+                <svg class="my_circle">
+                    <circle r="50" cx="50%" cy="50%" stroke="gray" fill="none" stroke-width="10" stroke-linecap="round" stroke-dasharray="236, 314">
+                    </circle>
+                    <circle class="success-circle" id="{{forloop.counter}}" percent = "{{res}}" r="50" cx="50%" cy="50%" stroke="red" fill="none" stroke-width="10" stroke-linecap="round" stroke-dasharray="236, 314">
+                    </circle>
+                </svg>
+                  <div class="circle-percentage text-center">
+                    <div>{{ res }}%</div>
+                  </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="row">
+            <form method="post">
+                {% csrf_token %}
+                  {% for field in form %}
+                  <div class="form-group form-outline">
+                    {{ field.label }}
+                    {{field}}
+                  </div>
+                  {% endfor %}
+                         
+                <div class=" d-flex justify-content-center mb-4">
+                  <button type="submit" class="btn btn-primary">Analize text</button>
+                </div>
+              </form>
+        </div>
+    </div>        
+</div>
+  
+<script src="{% static 'js/script_playground.js' %}"></script>
+
+
+{% endblock content %}

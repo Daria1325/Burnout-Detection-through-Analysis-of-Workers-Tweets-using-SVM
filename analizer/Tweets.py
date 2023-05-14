@@ -4,6 +4,11 @@ from dateutil.relativedelta import relativedelta
 import re
 import datetime
 from nltk.corpus import stopwords
+import snscrape.modules.twitter as sntwitter
+import pandas as pd
+import spacy
+nlp = spacy.load('en_core_web_sm', disable=['parser', 'ner']) 
+
 
 class Twitter(object):
     def __init__(self, stop_words = 'english', config = 'analizer\config.ini'):
@@ -26,7 +31,22 @@ class Twitter(object):
         api = tweepy.API(auth)
         return api
 
+    def get_tweets_snc(self, username, end_date):
+        start_date = end_date + relativedelta(months=-1)
+        number_of_tweets=200
+        tweets = []
 
+        #2022-07-31
+        for i,tweet in enumerate(sntwitter.TwitterSearchScraper(f'from:{username} since:{start_date} until:{end_date}').get_items()):
+            if i>number_of_tweets:
+                break
+            cleaned = self.clean_tweets(tweet.rawContent)
+            if cleaned:
+                doc = nlp(cleaned)
+                cleaned=" ".join([token.lemma_ for token in doc])
+                tweets.append(cleaned)
+        return tweets
+        
 
     def get_tweets(self,username,end_date):
             api = self.config(self.config_path)
@@ -38,7 +58,6 @@ class Twitter(object):
             for tweet in tmpTweets:
                 if tweet.created_at.date() < end_date and tweet.created_at.date() > start_date:
                     cleaned = self.clean_tweets(tweet.text)
-                    print(tweet.text)
                     if cleaned:
                         tweets.append(cleaned)
 
@@ -48,8 +67,6 @@ class Twitter(object):
                     for tweet in tmpTweets[1:]:
                         if tweet.created_at.date() <= end_date and tweet.created_at.date() > start_date:
                             cleaned = self.clean_tweets(tweet.text)
-                            print(tweet.text)
-                            print("clean\n",cleaned)
                             if cleaned:
                                 tweets.append(cleaned)
                 else:
@@ -67,5 +84,7 @@ class Twitter(object):
         for x in text.split():
             if x not in self.stop_words:
                 clean_text=" ".join([clean_text, x])
+        doc = nlp(clean_text)
+        clean_text=" ".join([token.lemma_ for token in doc])
         return clean_text
 
